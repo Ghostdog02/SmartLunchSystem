@@ -1,12 +1,17 @@
 ﻿@{
-    ViewData["Title"] = "Login Page";
+    ViewData["Title"] = "Sign In";
 }
 
-<div class=container-fluid>
-    <div class=row>
-        <div class=col-sm-12>
-            <h1>Sign in to the Smart Lunch</h1>
-            @* <a href="/signin-oidc">Log in with Google</a> *@
+<div class='container-fluid'>
+    <div class='row'>
+        <div class='col-sm-12 body-content'>
+            <h2>Sign in to the Weather Checker</h2>
+
+            <a asp-controller="Account"
+               asp-action="ExternalLogin"
+               class="btn btn-primary">
+                Log in with Google
+            </a>
         </div>
     </div>
 </div>
