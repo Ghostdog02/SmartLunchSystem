@@ -21,8 +21,8 @@ namespace SmartLunch
             .AddOpenIdConnect(options =>
             {
                 options.Authority = "https://accounts.google.com";
-                options.ClientId = "1019391910323-5s9csp88j1lruboso8kd8ultsvn6vldv.apps.googleusercontent.com";
-                options.ClientSecret = "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";
+                options.ClientId = builder.Configuration["OpenId:ClientId"];
+                options.ClientSecret = builder.Configuration["OpenId:ClientSecret"];
                 options.CallbackPath = "/signin-oidc";
                 options.Scope.Add("openid");
                 options.Scope.Add("profile");

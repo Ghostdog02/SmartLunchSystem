@@ -15,10 +15,12 @@ namespace SmartLunch.Controllers
             return View();
         }
 
-        //public IActionResult Logout()
-        //{
-        //    return View();
-        //}
+        public async Task<IActionResult> SignOut()
+        {
+            await HttpContext.SignOutAsync("Cookies");
+
+            return RedirectToAction("Index", "Home");
+        }
 
         //public IActionResult LoginTest()
         //{

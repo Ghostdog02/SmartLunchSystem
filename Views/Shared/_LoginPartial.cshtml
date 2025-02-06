@@ -1,7 +1,7 @@
 ﻿@using System.Security.Claims
 
 <div class="navbar-nav">
-    @if (User.Identity?.IsAuthenticated == true)
+    @if (User.Identity?.IsAuthenticated)
     {
         <span class="navbar-text" style='font-size:20px'>
             Welcome, @User.Identity.Name!
