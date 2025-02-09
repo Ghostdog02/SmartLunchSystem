@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using SmartLunch.Database;
 
 namespace SmartLunch
 {
@@ -10,7 +13,31 @@ namespace SmartLunch
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddAuthentication();
+            builder.Services.AddAuthorization();
             builder.Services.AddControllersWithViews();
+            var connectionString = builder.Configuration.GetConnectionString("SmartLunchContextConnection");
+            //builder.Services.AddDbContext<CouponsContext>(options => options.UseSqlServer(connectionString));
+
+
+            builder.Services.AddDbContext<SmartLunchDbContext>(options =>
+                options.UseSqlServer(connectionString));
+            builder.Services.AddIdentity<User, IdentityRole<int>>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole<int>>()
+                .AddEntityFrameworkStores<SmartLunchDbContext>()
+                .AddDefaultTokenProviders();
+            //builder.Services.AddIdentity<User, IdentityRole<int>()
+            //    .AddEntityFrameworkStores<SmartLunchDbContext>()
+            //    .AddDefaultTokenProviders();
+            //builder.Services.AddControllersWithViews();
+
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                // Default SignIn settings.
+                options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
+                options.Lockout.AllowedForNewUsers = true;
+            });
 
             builder.Services.AddAuthentication(options =>
             {
@@ -45,6 +72,7 @@ namespace SmartLunch
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

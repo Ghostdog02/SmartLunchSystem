@@ -1,0 +1,15 @@
+D:\Projects\SmartLunchSystem\SmartLunch.Database\obj\Debug\net9.0\SmartLunch.Database.csproj.AssemblyReference.cache
+D:\Projects\SmartLunchSystem\SmartLunch.Database\obj\Debug\net9.0\SmartLunch.Database.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects\SmartLunchSystem\SmartLunch.Database\obj\Debug\net9.0\SmartLunch.Database.AssemblyInfoInputs.cache
+D:\Projects\SmartLunchSystem\SmartLunch.Database\obj\Debug\net9.0\SmartLunch.Database.AssemblyInfo.cs
+D:\Projects\SmartLunchSystem\SmartLunch.Database\obj\Debug\net9.0\SmartLunch.Database.csproj.CoreCompileInputs.cache
+D:\Projects\SmartLunchSystem\SmartLunch.Database\obj\Debug\net9.0\SmartLunch.Database.sourcelink.json
+D:\Projects\SmartLunchSystem\SmartLunch.Database\bin\Debug\net9.0\SmartLunch.Database.deps.json
+D:\Projects\SmartLunchSystem\SmartLunch.Database\bin\Debug\net9.0\SmartLunch.Database.dll
+D:\Projects\SmartLunchSystem\SmartLunch.Database\bin\Debug\net9.0\SmartLunch.Database.pdb
+D:\Projects\SmartLunchSystem\SmartLunch.Database\obj\Debug\net9.0\SmartLunch.Database.dll
+D:\Projects\SmartLunchSystem\SmartLunch.Database\obj\Debug\net9.0\refint\SmartLunch.Database.dll
+D:\Projects\SmartLunchSystem\SmartLunch.Database\obj\Debug\net9.0\SmartLunch.Database.pdb
+D:\Projects\SmartLunchSystem\SmartLunch.Database\obj\Debug\net9.0\ref\SmartLunch.Database.dll
+D:\Projects\SmartLunchSystem\SmartLunch.Database\bin\Debug\net9.0\SmartLunch.Database.runtimeconfig.json
+D:\Projects\SmartLunchSystem\SmartLunch.Database\obj\Debug\net9.0\SmartLunch.Database.genruntimeconfig.cache

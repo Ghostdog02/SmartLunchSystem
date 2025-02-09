@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35222.181
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLunch", "SmartLunch\SmartLunch.csproj", "{6F52FDF9-8A7A-49F5-A9AB-6997F2378CD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLunch.Database", "SmartLunch.Database\SmartLunch.Database.csproj", "{47D97229-76E8-445C-A226-FF58C99AB72A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6F52FDF9-8A7A-49F5-A9AB-6997F2378CD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F52FDF9-8A7A-49F5-A9AB-6997F2378CD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F52FDF9-8A7A-49F5-A9AB-6997F2378CD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F52FDF9-8A7A-49F5-A9AB-6997F2378CD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47D97229-76E8-445C-A226-FF58C99AB72A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47D97229-76E8-445C-A226-FF58C99AB72A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47D97229-76E8-445C-A226-FF58C99AB72A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47D97229-76E8-445C-A226-FF58C99AB72A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {90F67B6B-B2F5-43F5-9D0D-190F2CA20D50}
+	EndGlobalSection
+EndGlobal
