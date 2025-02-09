@@ -7,7 +7,21 @@ namespace SmartLunch.Database
 {
     public class SmartLunchDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
-        public SmartLunchDbContext(DbContextOptions<SmartLunchDbContext> options)
+        //DbSet<User> Users { get; set; }
+
+        //DbSet<IdentityRole<int>> Roles { get; set; }
+
+        //DbSet<IdentityUserRole<int>> UserRoles { get; set; }
+
+        //DbSet<IdentityUserClaim<int>> UserClaims { get; set; }
+
+        //DbSet<IdentityUserLogin<int>> UserLogins { get; set; }
+
+        //DbSet<IdentityRoleClaim<int>> RoleClaims { get; set; }
+
+        //DbSet<IdentityUserToken<int>> UserTokens { get; set; }
+
+        public SmartLunchDbContext(DbContextOptions options)
             : base(options)
         {
         }
