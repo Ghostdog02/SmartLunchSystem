@@ -3,12 +3,20 @@
   "WorkspaceRootPath": "D:\\Projects\\SmartLunchSystem\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\Projects\\SmartLunchSystem\\SmartLunch.Database\\Migrations\\20250209101117_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:SmartLunch.Database\\Migrations\\20250209101117_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{47D97229-76E8-445C-A226-FF58C99AB72A}|SmartLunch.Database\\SmartLunch.Database.csproj|d:\\projects\\smartlunchsystem\\smartlunch.database\\smartlunchdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{47D97229-76E8-445C-A226-FF58C99AB72A}|SmartLunch.Database\\SmartLunch.Database.csproj|solutionrelative:smartlunch.database\\smartlunchdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6F52FDF9-8A7A-49F5-A9AB-6997F2378CD7}|SmartLunch\\SmartLunch.csproj|d:\\projects\\smartlunchsystem\\smartlunch\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6F52FDF9-8A7A-49F5-A9AB-6997F2378CD7}|SmartLunch\\SmartLunch.csproj|solutionrelative:smartlunch\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6F52FDF9-8A7A-49F5-A9AB-6997F2378CD7}|SmartLunch\\SmartLunch.csproj|d:\\projects\\smartlunchsystem\\smartlunch\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6F52FDF9-8A7A-49F5-A9AB-6997F2378CD7}|SmartLunch\\SmartLunch.csproj|solutionrelative:smartlunch\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47D97229-76E8-445C-A226-FF58C99AB72A}|SmartLunch.Database\\SmartLunch.Database.csproj|d:\\projects\\smartlunchsystem\\smartlunch.database\\seeddata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47D97229-76E8-445C-A226-FF58C99AB72A}|SmartLunch.Database\\SmartLunch.Database.csproj|solutionrelative:smartlunch.database\\seeddata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,28 +42,54 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "20250209101117_InitialCreate.cs",
-              "DocumentMoniker": "D:\\Projects\\SmartLunchSystem\\SmartLunch.Database\\Migrations\\20250209101117_InitialCreate.cs",
-              "RelativeDocumentMoniker": "SmartLunch.Database\\Migrations\\20250209101117_InitialCreate.cs",
-              "ToolTip": "D:\\Projects\\SmartLunchSystem\\SmartLunch.Database\\Migrations\\20250209101117_InitialCreate.cs",
-              "RelativeToolTip": "SmartLunch.Database\\Migrations\\20250209101117_InitialCreate.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "SeedData.cs",
+              "DocumentMoniker": "D:\\Projects\\SmartLunchSystem\\SmartLunch.Database\\SeedData.cs",
+              "RelativeDocumentMoniker": "SmartLunch.Database\\SeedData.cs",
+              "ToolTip": "D:\\Projects\\SmartLunchSystem\\SmartLunch.Database\\SeedData.cs",
+              "RelativeToolTip": "SmartLunch.Database\\SeedData.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-09T10:11:18.043Z",
+              "WhenOpened": "2025-02-09T15:43:38.436Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "D:\\Projects\\SmartLunchSystem\\SmartLunch\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "SmartLunch\\Controllers\\AccountController.cs",
+              "ToolTip": "D:\\Projects\\SmartLunchSystem\\SmartLunch\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "SmartLunch\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAACYAAAAAAAAAAAAwwEMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-09T15:40:12.713Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "SmartLunchDbContext.cs",
               "DocumentMoniker": "D:\\Projects\\SmartLunchSystem\\SmartLunch.Database\\SmartLunchDbContext.cs",
               "RelativeDocumentMoniker": "SmartLunch.Database\\SmartLunchDbContext.cs",
               "ToolTip": "D:\\Projects\\SmartLunchSystem\\SmartLunch.Database\\SmartLunchDbContext.cs",
               "RelativeToolTip": "SmartLunch.Database\\SmartLunchDbContext.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAEwBUAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAADwAAAAAAAAAAAAowFIAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-09T10:10:31.774Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Projects\\SmartLunchSystem\\SmartLunch\\Program.cs",
+              "RelativeDocumentMoniker": "SmartLunch\\Program.cs",
+              "ToolTip": "D:\\Projects\\SmartLunchSystem\\SmartLunch\\Program.cs",
+              "RelativeToolTip": "SmartLunch\\Program.cs",
+              "ViewState": "AgIAAEMAAAAAAAAAAAAgwEwAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-09T15:29:46.534Z",
               "EditorCaption": ""
             }
           ]

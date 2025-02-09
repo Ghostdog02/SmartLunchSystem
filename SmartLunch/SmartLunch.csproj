@@ -27,4 +27,8 @@
     <ProjectReference Include="..\SmartLunch.Database\SmartLunch.Database.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

@@ -12,7 +12,7 @@ using SmartLunch.Database;
 namespace SmartLunch.Data.Migrations
 {
     [DbContext(typeof(SmartLunchDbContext))]
-    [Migration("20250209101117_InitialCreate")]
+    [Migration("20250209110521_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

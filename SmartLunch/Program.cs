@@ -8,7 +8,7 @@ namespace SmartLunch
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -74,7 +74,38 @@ namespace SmartLunch
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
+            //await ApplyMigrations(app);
+
             app.Run();
+        }
+
+        static async Task ApplyMigrations(WebApplication app)
+        {
+            using var scope = app.Services.CreateScope();
+            var cancelationTokenSource = new CancellationTokenSource();
+            cancelationTokenSource.CancelAfter(TimeSpan.FromMinutes(5));
+
+            var services = scope.ServiceProvider;
+            var logger = services.GetRequiredService<ILogger<Program>>();
+            var dbContext = services.GetRequiredService<SmartLunchDbContext>();
+
+            try
+            {
+                logger.LogInformation("Starting to apply database migrations...");
+
+                // Apply any pending migrations
+                await dbContext.Database.MigrateAsync(cancelationTokenSource.Token);
+
+                logger.LogInformation("Database migrations applied successfully.");
+            }
+
+            catch (Exception ex)
+            {
+                // Log the exception if migrations fail
+                logger.LogError(ex, "An error occurred while applying database migrations.");
+
+                throw;
+            }
         }
     }
 }
