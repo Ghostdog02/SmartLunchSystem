@@ -31,42 +31,42 @@ namespace SmartLunch.Database
                 }
             }
 
-            var users = new List<User>();
-            string password = "oXMR4TgdfQAEqEN";
+            //var users = new List<User>();
+            //string password = "oXMR4TgdfQAEqEN";
 
-            var user = new User
-            {
-                UserName = "Admin",
-                Email = "admin@admin.com",
-                PhoneNumber = "0882452245",
-                EmailConfirmed = true,
-                PhoneNumberConfirmed = true,
-                LockoutEnabled = false,
-            };
+            //var user = new User
+            //{
+            //    UserName = "Admin",
+            //    Email = "admin@admin.com",
+            //    PhoneNumber = "0882452245",
+            //    EmailConfirmed = true,
+            //    PhoneNumberConfirmed = true,
+            //    LockoutEnabled = false,
+            //};
 
-            var user2 = new User
-            {
-                UserName = "Parent",
-                Email = "parent@parent.com",
-                PhoneNumber = "0882432245",
-                EmailConfirmed = true,
-                PhoneNumberConfirmed = true,
-                LockoutEnabled = false,
-            };
+            //var user2 = new User
+            //{
+            //    UserName = "Parent",
+            //    Email = "parent@parent.com",
+            //    PhoneNumber = "0882432245",
+            //    EmailConfirmed = true,
+            //    PhoneNumberConfirmed = true,
+            //    LockoutEnabled = false,
+            //};
 
-            users.Add(user);
-            users.Add(user2);
+            //users.Add(user);
+            //users.Add(user2);
 
-            foreach (var normalUser in users)
-            {
-                if (await userManager.FindByEmailAsync(normalUser.Email) == null)
-                {
-                    await userManager.CreateAsync(normalUser, password);
+            //foreach (var normalUser in users)
+            //{
+            //    if (await userManager.FindByEmailAsync(normalUser.Email) == null)
+            //    {
+            //        await userManager.CreateAsync(normalUser, password);
 
-                    //Change role Parameter if you want to change you username later
-                    await userManager.AddToRoleAsync(normalUser, normalUser.UserName);
-                }
-            }
+            //        //Change role Parameter if you want to change you username later
+            //        await userManager.AddToRoleAsync(normalUser, normalUser.UserName);
+            //    }
+            //}
 
             await context.SaveChangesAsync();
         }

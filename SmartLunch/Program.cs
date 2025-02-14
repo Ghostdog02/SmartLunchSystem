@@ -24,11 +24,14 @@ namespace SmartLunch
                 options.Authority = "https://accounts.google.com";
                 options.ClientId = builder.Configuration["OpenId:ClientId"];
                 options.ClientSecret = builder.Configuration["OpenId:ClientSecret"];
-                options.CallbackPath = "/signin-oidc";
+                options.ResponseType = "code";
+                options.SaveTokens = true;
+
                 options.Scope.Add("openid");
                 options.Scope.Add("profile");
-                options.ResponseType = "code";
-                options.SkipUnrecognizedRequests = true;
+                options.Scope.Add("email");
+
+                options.CallbackPath = "/signin-oidc";
             });
 
             builder.Services.AddControllersWithViews();
@@ -74,7 +77,10 @@ namespace SmartLunch
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            //await ApplyMigrations(app);
+            var seeder = new SeedData();
+            seeder.InitializeAsync(app.Services);
+
+            await ApplyMigrations(app);
 
             app.Run();
         }

@@ -15,14 +15,16 @@
     }
 </div> *@
 
-@if (Context.User.Identity!.IsAuthenticated)
+@if (User.Identity!.IsAuthenticated)
 {
     <li class="nav-item">
         <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="SignOut">SignOut</a>
     </li>
 
-    <span class="nav-link text-dark">Hi @Context.User.Identity.Name</span>
+    @* <span class="nav-link text-dark">Welcome, @User.FindFirst(ClaimTypes.GivenName)?.Value!</span> *@
+    <span class="nav-link text-dark">Hi @User.Identity.Name</span>
 }
+
 else
 {
     <li class="nav-item">

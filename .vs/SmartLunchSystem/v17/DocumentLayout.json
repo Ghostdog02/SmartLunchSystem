@@ -3,10 +3,6 @@
   "WorkspaceRootPath": "D:\\Projects\\SmartLunchSystem\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{47D97229-76E8-445C-A226-FF58C99AB72A}|SmartLunch.Database\\SmartLunch.Database.csproj|d:\\projects\\smartlunchsystem\\smartlunch.database\\smartlunchdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{47D97229-76E8-445C-A226-FF58C99AB72A}|SmartLunch.Database\\SmartLunch.Database.csproj|solutionrelative:smartlunch.database\\smartlunchdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{6F52FDF9-8A7A-49F5-A9AB-6997F2378CD7}|SmartLunch\\SmartLunch.csproj|d:\\projects\\smartlunchsystem\\smartlunch\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6F52FDF9-8A7A-49F5-A9AB-6997F2378CD7}|SmartLunch\\SmartLunch.csproj|solutionrelative:smartlunch\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -15,8 +11,20 @@
       "RelativeMoniker": "D:0:0:{6F52FDF9-8A7A-49F5-A9AB-6997F2378CD7}|SmartLunch\\SmartLunch.csproj|solutionrelative:smartlunch\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{47D97229-76E8-445C-A226-FF58C99AB72A}|SmartLunch.Database\\SmartLunch.Database.csproj|d:\\projects\\smartlunchsystem\\smartlunch.database\\seeddata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{47D97229-76E8-445C-A226-FF58C99AB72A}|SmartLunch.Database\\SmartLunch.Database.csproj|solutionrelative:smartlunch.database\\seeddata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{6F52FDF9-8A7A-49F5-A9AB-6997F2378CD7}|SmartLunch\\SmartLunch.csproj|d:\\projects\\smartlunchsystem\\smartlunch\\views\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6F52FDF9-8A7A-49F5-A9AB-6997F2378CD7}|SmartLunch\\SmartLunch.csproj|solutionrelative:smartlunch\\views\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6F52FDF9-8A7A-49F5-A9AB-6997F2378CD7}|SmartLunch\\SmartLunch.csproj|d:\\projects\\smartlunchsystem\\smartlunch\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6F52FDF9-8A7A-49F5-A9AB-6997F2378CD7}|SmartLunch\\SmartLunch.csproj|solutionrelative:smartlunch\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6F52FDF9-8A7A-49F5-A9AB-6997F2378CD7}|SmartLunch\\SmartLunch.csproj|d:\\projects\\smartlunchsystem\\smartlunch\\views\\account\\loginfailed.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6F52FDF9-8A7A-49F5-A9AB-6997F2378CD7}|SmartLunch\\SmartLunch.csproj|solutionrelative:smartlunch\\views\\account\\loginfailed.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6F52FDF9-8A7A-49F5-A9AB-6997F2378CD7}|SmartLunch\\SmartLunch.csproj|d:\\projects\\smartlunchsystem\\smartlunch\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{6F52FDF9-8A7A-49F5-A9AB-6997F2378CD7}|SmartLunch\\SmartLunch.csproj|solutionrelative:smartlunch\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,7 +34,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Bookmark",
@@ -42,54 +50,75 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "SeedData.cs",
-              "DocumentMoniker": "D:\\Projects\\SmartLunchSystem\\SmartLunch.Database\\SeedData.cs",
-              "RelativeDocumentMoniker": "SmartLunch.Database\\SeedData.cs",
-              "ToolTip": "D:\\Projects\\SmartLunchSystem\\SmartLunch.Database\\SeedData.cs",
-              "RelativeToolTip": "SmartLunch.Database\\SeedData.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-09T15:43:38.436Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "AccountController.cs",
-              "DocumentMoniker": "D:\\Projects\\SmartLunchSystem\\SmartLunch\\Controllers\\AccountController.cs",
-              "RelativeDocumentMoniker": "SmartLunch\\Controllers\\AccountController.cs",
-              "ToolTip": "D:\\Projects\\SmartLunchSystem\\SmartLunch\\Controllers\\AccountController.cs",
-              "RelativeToolTip": "SmartLunch\\Controllers\\AccountController.cs",
-              "ViewState": "AgIAACYAAAAAAAAAAAAwwEMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-09T15:40:12.713Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "SmartLunchDbContext.cs",
-              "DocumentMoniker": "D:\\Projects\\SmartLunchSystem\\SmartLunch.Database\\SmartLunchDbContext.cs",
-              "RelativeDocumentMoniker": "SmartLunch.Database\\SmartLunchDbContext.cs",
-              "ToolTip": "D:\\Projects\\SmartLunchSystem\\SmartLunch.Database\\SmartLunchDbContext.cs",
-              "RelativeToolTip": "SmartLunch.Database\\SmartLunchDbContext.cs",
-              "ViewState": "AgIAADwAAAAAAAAAAAAowFIAAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-09T10:10:31.774Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\Projects\\SmartLunchSystem\\SmartLunch\\Program.cs",
               "RelativeDocumentMoniker": "SmartLunch\\Program.cs",
               "ToolTip": "D:\\Projects\\SmartLunchSystem\\SmartLunch\\Program.cs",
               "RelativeToolTip": "SmartLunch\\Program.cs",
-              "ViewState": "AgIAAEMAAAAAAAAAAAAgwEwAAAApAAAAAAAAAA==",
+              "ViewState": "AgIAABEAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-09T15:29:46.534Z",
+              "WhenOpened": "2025-02-14T12:49:21.836Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "_LoginPartial.cshtml",
+              "DocumentMoniker": "D:\\Projects\\SmartLunchSystem\\SmartLunch\\Views\\Shared\\_LoginPartial.cshtml",
+              "RelativeDocumentMoniker": "SmartLunch\\Views\\Shared\\_LoginPartial.cshtml",
+              "ToolTip": "D:\\Projects\\SmartLunchSystem\\SmartLunch\\Views\\Shared\\_LoginPartial.cshtml",
+              "RelativeToolTip": "SmartLunch\\Views\\Shared\\_LoginPartial.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-14T12:39:37.639Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "D:\\Projects\\SmartLunchSystem\\SmartLunch\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "SmartLunch\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "D:\\Projects\\SmartLunchSystem\\SmartLunch\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "SmartLunch\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAIwCUAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-14T12:39:29.591Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "LoginFailed.cshtml",
+              "DocumentMoniker": "D:\\Projects\\SmartLunchSystem\\SmartLunch\\Views\\Account\\LoginFailed.cshtml",
+              "RelativeDocumentMoniker": "SmartLunch\\Views\\Account\\LoginFailed.cshtml",
+              "ToolTip": "D:\\Projects\\SmartLunchSystem\\SmartLunch\\Views\\Account\\LoginFailed.cshtml",
+              "RelativeToolTip": "SmartLunch\\Views\\Account\\LoginFailed.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-14T12:35:48.819Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "D:\\Projects\\SmartLunchSystem\\SmartLunch\\Views\\Account\\Login.cshtml",
+              "RelativeDocumentMoniker": "SmartLunch\\Views\\Account\\Login.cshtml",
+              "ToolTip": "D:\\Projects\\SmartLunchSystem\\SmartLunch\\Views\\Account\\Login.cshtml",
+              "RelativeToolTip": "SmartLunch\\Views\\Account\\Login.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-14T12:29:52.193Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "D:\\Projects\\SmartLunchSystem\\SmartLunch\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "SmartLunch\\Controllers\\AccountController.cs",
+              "ToolTip": "D:\\Projects\\SmartLunchSystem\\SmartLunch\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "SmartLunch\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAAADIAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-14T12:28:49.97Z",
               "EditorCaption": ""
             }
           ]
