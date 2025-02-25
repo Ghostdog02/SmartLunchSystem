@@ -5,19 +5,8 @@ namespace SmartLunch.Database
 {
     public class User : IdentityUser<int>
     {
-        [Required]
-        public override string? UserName { get; set; }
+        public DateTime RegistrationDate { get; set; }
 
-        [Required]
-        //[RegularExpression("/([+]359[0-9]{8})|(02[0-9]{7})|(08(0|9|8)([0-9]{7,8}))/gm")]
-        //[Phone]
-        public override string? PhoneNumber { get; set; }
-
-        [Required]
-        //[EmailAddress]
-        public override string? Email { get; set; }
-
-        public string? Role { get; set; }
-
+        public DateTime LastLoginDate { get; set; }
     }
 }

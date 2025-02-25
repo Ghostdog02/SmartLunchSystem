@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using SmartLunch.Database;
 using SmartLunch.Services;
 
 namespace SmartLunch.Controllers
@@ -43,15 +39,11 @@ namespace SmartLunch.Controllers
                 return RedirectToAction("LoginFailed");
             }
 
-            //if (!User.Identity.IsAuthenticated)
-            //{
-            //    return RedirectToAction("LoginFailed");
-            //}
-
             // Extract user claims
-            //var claims = authenticateResult.Principal.Claims;
-            //var email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-            //var name = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+            var claims = authenticateResult.Principal.Claims;
+
+            var usersCreation = new UsersCreation(HttpContext.RequestServices);
+            await usersCreation.CreateUsersAsync(claims);
 
             // Here you would typically:
             // 1. Check if user exists in your system
