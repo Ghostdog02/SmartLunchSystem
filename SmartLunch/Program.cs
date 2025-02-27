@@ -18,7 +18,11 @@ namespace SmartLunch
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
-            .AddCookie()
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Account/Login"; // Redirect to login if unauthorized
+                options.ExpireTimeSpan = TimeSpan.FromDays(2);
+            })
             .AddOpenIdConnect(options =>
             {
                 options.Authority = "https://accounts.google.com";

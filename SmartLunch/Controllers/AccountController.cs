@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using SmartLunch.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 
 namespace SmartLunch.Controllers
 {
@@ -23,7 +25,6 @@ namespace SmartLunch.Controllers
 
             var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
 
-            // Challenge the specified authentication scheme
             return Challenge(properties, OpenIdConnectDefaults.AuthenticationScheme);
         }
 
@@ -41,14 +42,29 @@ namespace SmartLunch.Controllers
 
             // Extract user claims
             var claims = authenticateResult.Principal.Claims;
+            var userCreation = new UserCreation(HttpContext.RequestServices);
 
-            var usersCreation = new UsersCreation(HttpContext.RequestServices);
-            await usersCreation.CreateUsersAsync(claims);
+            if (claims == null)
+            {
+                throw new Exception($"Provided claims are null");
+            }
 
-            // Here you would typically:
-            // 1. Check if user exists in your system
-            // 2. Create user if not exists
-            // 3. Sign in the user
+            await userCreation.CreateUserIfNotExistingAsync(claims);
+
+            //// Sign the user into the application's cookie scheme
+            //var claimsIdentity = new ClaimsIdentity(
+            //    claims,
+            //    CookieAuthenticationDefaults.AuthenticationScheme // Use cookie auth type
+            //);
+
+            //await HttpContext.SignInAsync(
+            //    CookieAuthenticationDefaults.AuthenticationScheme,
+            //    new ClaimsPrincipal(claimsIdentity),
+            //    new AuthenticationProperties
+            //    {
+            //        IsPersistent = true // Optional: Keep the user logged in
+            //    }
+            //);
 
             return RedirectToAction("Index", "Home");
         }
@@ -60,6 +76,10 @@ namespace SmartLunch.Controllers
 
         public async Task<IActionResult> SignOut()
         {
+            //// Sign out of the application's cookie
+            //await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // Sign out of OpenID Connect (optional)
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
 
             return RedirectToAction("Index", "Home");

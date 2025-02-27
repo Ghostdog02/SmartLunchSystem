@@ -32,7 +32,13 @@ namespace SmartLunch.Database
 
             try
             {
+                if (await userManager.FindByNameAsync(user.UserName) != null)
+                {
+                    return;
+                }
+
                 var creationResult = await userManager.CreateAsync(user);
+
                 if (!creationResult.Succeeded)
                 {
                     throw new Exception($"User creation failed: {string.Join(", ", creationResult.Errors.Select(e => e.Description))}");
