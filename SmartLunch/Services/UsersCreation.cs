@@ -31,10 +31,7 @@ namespace SmartLunch.Services
                     await AddRoleToUser(userManager, currentUser);
                 }
 
-                else
-                {
-                    UpdateLoginDate(currentUser);
-                }
+                UpdateLoginDate(currentUser);
 
                 await context.SaveChangesAsync();
             }
@@ -93,6 +90,7 @@ namespace SmartLunch.Services
                     Email = email,
                     EmailConfirmed = true,
                     LockoutEnabled = false,
+                    RegistrationDate = DateTime.Now
                 };
 
                 var creationResult = await userManager.CreateAsync(user);

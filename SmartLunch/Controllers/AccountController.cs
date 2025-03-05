@@ -43,12 +43,7 @@ namespace SmartLunch.Controllers
             var claims = authenticateResult.Principal.Claims;
 
             var usersCreation = new UsersCreation(HttpContext.RequestServices);
-            await usersCreation.CreateUsersAsync(claims);
-
-            // Here you would typically:
-            // 1. Check if user exists in your system
-            // 2. Create user if not exists
-            // 3. Sign in the user
+            await usersCreation.CreateUserIfNotExistingAsync(claims);
 
             return RedirectToAction("Index", "Home");
         }

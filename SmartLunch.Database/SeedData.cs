@@ -13,7 +13,11 @@ namespace SmartLunch.Database
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
             await SeedRolesAsync(context, userManager);
-            await SeedAdminUserAsync(context, userManager);
+
+            if (userManager.FindByEmailAsync("alex.vesely07@gmail.com") == null)
+            {
+                await SeedAdminUserAsync(context, userManager);
+            }
         }
 
         private async Task SeedAdminUserAsync(SmartLunchDbContext context, UserManager<User> userManager)
