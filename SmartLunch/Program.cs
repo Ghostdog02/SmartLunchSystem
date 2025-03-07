@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication.Google;
+//using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SmartLunch.Database;
@@ -16,31 +18,49 @@ namespace SmartLunch
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
             })
             .AddCookie()
-            .AddOpenIdConnect(options =>
+            .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
             {
-                options.Authority = "https://accounts.google.com";
-                options.ClientId = builder.Configuration["OpenId:ClientId"];
-                options.ClientSecret = builder.Configuration["OpenId:ClientSecret"];
-                options.ResponseType = "code";
-                options.SaveTokens = true;
-
-                options.Scope.Add("openid");
+                options.ClientId = builder.Configuration["Authentication:Google:ClientId"]!;
+                options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
+                options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
                 options.Scope.Add("profile");
                 options.Scope.Add("email");
-
-                options.CallbackPath = "/signin-oidc";
+                //options.CallbackPath = "/signin-google";
+                
             });
+            //builder.Services.AddAuthentication(options =>
+            //{
+            //    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            //})
+            //.AddCookie()
+            //.AddOpenIdConnect(options =>
+            //{
+            //    options.Authority = "https://accounts.google.com";
+            //    options.ClientId = builder.Configuration["OpenId:ClientId"];
+            //    options.ClientSecret = builder.Configuration["OpenId:ClientSecret"];
+            //    options.ResponseType = "code";
+            //    options.SaveTokens = true;
+
+            //    options.Scope.Add("openid");
+            //    options.Scope.Add("profile");
+            //    options.Scope.Add("email");
+
+            //    options.CallbackPath = "/signin-oidc";
+            //});
 
             builder.Services.AddControllersWithViews();
+
             var connectionString = builder.Configuration.GetConnectionString("SmartLunchContextConnection");
-            //builder.Services.AddDbContext<CouponsContext>(options => options.UseSqlServer(connectionString));
+
             builder.Services.AddDbContext<SmartLunchDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
-            builder.Services.AddIdentity<User, IdentityRole<int>>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
+            options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole<int>>()
                 .AddEntityFrameworkStores<SmartLunchDbContext>()
                 .AddDefaultTokenProviders();
@@ -52,8 +72,6 @@ namespace SmartLunch
                 options.SignIn.RequireConfirmedPhoneNumber = false;
                 options.Lockout.AllowedForNewUsers = true;
             });
-
-            
 
             var app = builder.Build();
 
@@ -78,7 +96,7 @@ namespace SmartLunch
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             var seeder = new SeedData();
-            seeder.InitializeAsync(app.Services);
+            await seeder.InitializeAsync(app.Services);
 
             await ApplyMigrations(app);
 

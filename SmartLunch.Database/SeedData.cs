@@ -6,7 +6,7 @@ namespace SmartLunch.Database
 {
     public class SeedData
     {
-        public async void InitializeAsync(IServiceProvider serviceProvider)
+        public async Task InitializeAsync(IServiceProvider serviceProvider)
         {
             using var scope = serviceProvider.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<SmartLunchDbContext>();

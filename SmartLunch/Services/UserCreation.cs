@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SmartLunch.Database;
 using System.Security.Claims;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
 
 namespace SmartLunch.Services
 {
@@ -23,11 +22,11 @@ namespace SmartLunch.Services
                 SmartLunchDbContext context = scope.ServiceProvider.GetRequiredService<SmartLunchDbContext>();
                 UserManager<User> userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
-                User currentUser = FindUserByEmailAsync(userManager, claims).Result;
+                User currentUser = await FindUserByEmailAsync(userManager, claims);
 
                 if (currentUser == null)
                 {
-                    currentUser = CreateUserAsync(userManager, claims).Result;
+                    currentUser = await CreateUserAsync(userManager, claims);
                     await AddRoleToUser(userManager, currentUser);
                 }
 
