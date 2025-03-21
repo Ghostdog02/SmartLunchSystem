@@ -75,19 +75,23 @@ namespace SmartLunch.Controllers
             }
         }
 
-        private IEnumerable<Claim> GetClaims(AuthenticateResult authenticateResult)
+        public IEnumerable<Claim> GetClaims(AuthenticateResult authenticateResult)
         {
             try
             {
-                var claims = authenticateResult.Principal!.Identities.FirstOrDefault()!.Claims.Select(claim => new
-                {
-                    claim.Issuer,
-                    claim.OriginalIssuer,
-                    claim.Type,
-                    claim.Value
-                });
+                ClaimsIdentity identity = authenticateResult.Principal!.Identities.FirstOrDefault(i => i.Claims.Any());
 
-                return (IEnumerable<Claim>)claims;
+                var claims = identity.Claims.ToList();
+
+                //var claims = authenticateResult.Principal!.Identities.FirstOrDefault()!.Claims.Select(claim => new
+                //{
+                //    claim.Issuer,
+                //    claim.OriginalIssuer,
+                //    claim.Type,
+                //    claim.Value
+                //});
+
+                return claims;
             }
 
             catch (NullReferenceException)
@@ -105,58 +109,5 @@ namespace SmartLunch.Controllers
                 throw new Exception("An unexpected error occurred during claim retrieval.");
             }
         }
-
-        //public async Task<TokenDto> AuthenticateWithGoogleAsync(string accessToken, string idToken)
-        //{
-        //    // Validate the ID token and retrieve the payload
-        //    var payload = await ValidateGoogleTokenAsync(idToken);
-
-        //    // Fetch additional user profile information using the access token
-        //    var userProfile = await GetGoogleUserProfileAsync(accessToken);
-
-        //    //// Check if the user already exists in the database
-        //    //var userExists = await identityUserRepository.IsExistsAsync(payload.Email);
-
-        //    //// If user doesn't exist, create a new user
-        //    //if (!userExists)
-        //    //    await CreateNewUserAsync(userProfile);
-
-        //    // Prepare the sign-in DTO for login
-        //    var signInDto = new SignInDto(
-        //        Email: userProfile.Email,
-        //        Password: string.Empty,  // No password for external logins
-        //        SignUpMethod: SignUpMethod.External
-        //    );
-
-        //    // Use the login service to issue a token
-        //    var token = await connectService.LoginAsync(signInDto);
-
-        //    return token;
-        //}
-
-        //private async Task<GoogleUserProfileViewModel> GetGoogleUserProfileAsync(string accessToken)
-        //{
-        //    using var httpClient = new HttpClient();
-
-        //    // Send GET request to Google UserInfo API
-        //    var response = await httpClient.GetAsync($"{googleUserInfoUrl}?access_token={accessToken}");
-        //    response.EnsureSuccessStatusCode();
-
-        //    // Parse the JSON response
-        //    var content = await response.Content.ReadAsStringAsync();
-        //    var userProfile = JsonConvert.DeserializeObject<GoogleUserProfileViewModel>(content);
-
-        //    return userProfile!;
-        //}
-
-        //private static async Task<GoogleJsonWebSignature.Payload> ValidateGoogleTokenAsync(string idToken)
-        //{
-        //    var payload = await GoogleJsonWebSignature.ValidateAsync(idToken);
-
-        //    if (payload == null || string.IsNullOrEmpty(payload.Email))
-        //        throw new UnauthorizedAccessException("Invalid Google Token");
-
-        //    return payload;
-        //}
     }
 }
