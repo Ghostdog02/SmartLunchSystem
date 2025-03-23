@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartLunch.Database")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c3ba540966efde46303f0d45dd6e3465d94221fe")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a83b7e13826379f7c9b6d459303ceedb72d88eac")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartLunch.Database")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartLunch.Database")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
