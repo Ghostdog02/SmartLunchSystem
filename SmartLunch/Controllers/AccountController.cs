@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartLunch.Services;
-using System.Security.Authentication;
 using System.Security.Claims;
 
 namespace SmartLunch.Controllers
@@ -64,11 +62,6 @@ namespace SmartLunch.Controllers
                 throw new Exception("An invalid operation occurred during authentication.", ex);
             }
 
-            catch (AuthenticationException ex)
-            {
-                throw new Exception("An authentication error occurred.", ex);
-            }
-
             catch (Exception ex)
             {
                 throw new Exception("An unexpected error occurred during authentication.", ex);
@@ -77,37 +70,19 @@ namespace SmartLunch.Controllers
 
         public IEnumerable<Claim> GetClaims(AuthenticateResult authenticateResult)
         {
-            try
-            {
-                ClaimsIdentity identity = authenticateResult.Principal!.Identities.FirstOrDefault(i => i.Claims.Any());
+            ClaimsIdentity identity = authenticateResult.Principal!.Identities.
+                FirstOrDefault(i => i.Claims.Any())
+                ?? throw new ArgumentException("No valid claims found in the principal.");
 
-                var claims = identity.Claims.ToList();
+            //var claims = authenticateResult.Principal!.Identities.FirstOrDefault()!.Claims.Select(claim => new
+            //{
+            //    claim.Issuer,
+            //    claim.OriginalIssuer,
+            //    claim.Type,
+            //    claim.Value
+            //});
 
-                //var claims = authenticateResult.Principal!.Identities.FirstOrDefault()!.Claims.Select(claim => new
-                //{
-                //    claim.Issuer,
-                //    claim.OriginalIssuer,
-                //    claim.Type,
-                //    claim.Value
-                //});
-
-                return claims;
-            }
-
-            catch (NullReferenceException)
-            {
-                throw new Exception("No claims found in the principal.");
-            }
-
-            catch (InvalidOperationException)
-            {
-                throw new Exception("An invalid operation occurred during claim retrieval.");
-            }
-
-            catch (Exception)
-            {
-                throw new Exception("An unexpected error occurred during claim retrieval.");
-            }
+            return identity.Claims.ToList();
         }
     }
 }

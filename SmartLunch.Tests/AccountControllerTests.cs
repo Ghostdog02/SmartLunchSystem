@@ -1,16 +1,13 @@
-﻿using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication;
-using SmartLunch;
-using SmartLunch.Controllers;
-using Moq;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Server.IIS;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Http;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Moq;
+using SmartLunch.Controllers;
+using System.Security.Claims;
 
 namespace SmartLunch.Tests
 {
@@ -55,6 +52,17 @@ namespace SmartLunch.Tests
         }
 
         [Fact]
+        public void GetClaims_NullArgument_ReturnsNullReferenceException()
+        {
+            //Arrange
+            var stubServiceProvider = new Mock<IServiceProvider>();
+            AccountController controller = new AccountController(stubServiceProvider.Object);
+
+            //Act and Assert
+            Assert.Throws<NullReferenceException>(() => controller.GetClaims(null));
+        }
+
+        [Fact]
         public async Task Login_RedirectsToGoogleAuthentication()
         {
             // Arrange
@@ -94,26 +102,9 @@ namespace SmartLunch.Tests
             // Assert
             authenticationServiceMock.Verify(auth => auth.ChallengeAsync(It.IsAny<HttpContext>(),
                 GoogleDefaults.AuthenticationScheme,
-                It.Is<AuthenticationProperties>(props => 
+                It.Is<AuthenticationProperties>(props =>
                 props.RedirectUri == "/Account/GoogleResponse")),
                 Times.Once);
         }
-
-        //private IServiceProvider StubServiceProvider(
-        //    IAuthenticationService authenticationService = null,
-        //    IUrlHelperFactory urlHelperFactory = null)
-        //{
-        //    var stubServiceProvider = new Mock<IServiceProvider>();
-
-        //    stubServiceProvider
-        //        .Setup(sp => sp.GetService(typeof(IAuthenticationService)))
-        //        .Returns(authenticationService);
-
-        //    stubServiceProvider
-        //        .Setup(sp => sp.GetService(typeof(IUrlHelperFactory)))
-        //        .Returns(authenticationService);
-
-        //    return stubServiceProvider.Object;
-        //}
     }
 }

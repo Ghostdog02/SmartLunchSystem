@@ -29,7 +29,7 @@ namespace SmartLunch
                 options.Scope.Add("profile");
                 options.Scope.Add("email");
                 //options.CallbackPath = "/signin-google";
-                
+
             });
             //builder.Services.AddAuthentication(options =>
             //{
