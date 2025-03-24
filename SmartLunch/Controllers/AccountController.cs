@@ -10,12 +10,10 @@ namespace SmartLunch.Controllers
     [AllowAnonymous]
     public class AccountController : Controller
     {
-        //public readonly string googleUserInfoUrl;
         private readonly IServiceProvider serviceProvider;
 
         public AccountController(IServiceProvider serviceProvider)
         {
-            //this.googleUserInfoUrl = googleUserInfoUrl;
             this.serviceProvider = serviceProvider;
         }
 
@@ -33,21 +31,23 @@ namespace SmartLunch.Controllers
 
             var claims = GetClaims(authenticateResult);
 
-            //IEnumerable<Claim>? claims = authenticateResult.Principal?.Claims;
-
-            var userCreation = new UsersCreation(serviceProvider);
-
-            //await userCreation.CreateUserIfNotExistingAsync(claims);
+            CreateUsers(claims).Wait();
 
             return Json(claims);
+        }
+
+        private async Task CreateUsers(IEnumerable<Claim> claims)
+        {
+            var userCreation = new UsersCreation(serviceProvider);
+            await userCreation.CreateUserIfNotExistingAsync(claims);
         }
 
         private async Task<AuthenticateResult> AuthenticateResultAsync()
         {
             try
             {
-                //CookieAuthenticationDefaults.AuthenticationScheme
-                AuthenticateResult authenticateResult = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+                AuthenticateResult authenticateResult = await HttpContext.
+                    AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
 
                 if (!authenticateResult.Succeeded)
                 {
@@ -74,15 +74,7 @@ namespace SmartLunch.Controllers
                 FirstOrDefault(i => i.Claims.Any())
                 ?? throw new ArgumentException("No valid claims found in the principal.");
 
-            //var claims = authenticateResult.Principal!.Identities.FirstOrDefault()!.Claims.Select(claim => new
-            //{
-            //    claim.Issuer,
-            //    claim.OriginalIssuer,
-            //    claim.Type,
-            //    claim.Value
-            //});
-
-            return identity.Claims.ToList();
+            return identity.Claims;
         }
     }
 }

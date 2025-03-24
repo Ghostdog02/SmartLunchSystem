@@ -22,7 +22,10 @@ namespace SmartLunch.Services
                 SmartLunchDbContext context = scope.ServiceProvider.GetRequiredService<SmartLunchDbContext>();
                 UserManager<User> userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
-                User currentUser = await FindUserByEmailAsync(userManager, claims);
+                string email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value
+                    ?? throw new ArgumentException("Email claim is missing.");
+
+                User? currentUser = await userManager.FindByEmailAsync(email);
 
                 if (currentUser == null)
                 {
@@ -46,106 +49,47 @@ namespace SmartLunch.Services
             }
         }
 
-        private async Task<User> FindUserByEmailAsync(UserManager<User> userManager,
-            IEnumerable<Claim> claims)
-        {
-            try
-            {
-                string? email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-                User? user = await userManager.FindByEmailAsync(email);
-                return user;
-            }
-
-            catch (ArgumentNullException ex)
-            {
-
-                throw new Exception("Null reference has been passed during finding user by email", ex);
-            }
-
-            catch (InvalidOperationException ex)
-            {
-
-                throw new Exception("An invalid operation occurred during finding user by email.", ex);
-            }
-
-            catch (Exception ex)
-            {
-                throw new Exception("An unexpected error occurred during finding user by email.", ex);
-            }
-
-
-        }
-
         private async Task<User> CreateUserAsync(UserManager<User> userManager, IEnumerable<Claim> claims)
         {
-            try
+            string? firstName = claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value;
+            string? email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+            var user = new User
             {
-                string? firstName = claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value;
-                string? email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                UserName = firstName,
+                Email = email,
+                EmailConfirmed = true,
+                LockoutEnabled = false,
+                RegistrationDate = DateTime.Now
+            };
 
-                var user = new User
-                {
-                    UserName = firstName,
-                    Email = email,
-                    EmailConfirmed = true,
-                    LockoutEnabled = false,
-                    RegistrationDate = DateTime.Now
-                };
+            var creationResult = await userManager.CreateAsync(user);
+            if (!creationResult.Succeeded)
+            {
+                var errorMessages = string.Join(", ", creationResult.Errors.
+                    Select(e => e.Description));
 
-                var creationResult = await userManager.CreateAsync(user);
-                if (!creationResult.Succeeded)
-                {
-                    // Handle errors (e.g., log or throw an exception)
-                    throw new Exception($"User creation failed: {string.Join(", ", creationResult.Errors)}");
-                }
-
-                return user;
+                throw new Exception($"User creation failed: {errorMessages}");
             }
 
-            catch (ArgumentException ex)
-            {
-
-                throw new Exception("An argument exception occurred during user creation.", ex);
-            }
-
-            catch (InvalidOperationException ex)
-            {
-                throw new Exception("An invalid operation occurred during user creation.", ex);
-            }
-
-            catch (Exception ex)
-            {
-                throw new Exception("An unexpected error occurred during user creation.", ex);
-            }
-
+            return user;
         }
 
         private async Task AddRoleToUser(UserManager<User> userManager, User user)
         {
-            try
-            {
-                await userManager.AddToRoleAsync(user, "Parent");
-            }
+            IdentityResult result = await userManager.AddToRoleAsync(user, "Parent");
 
-            catch (ArgumentException ex)
+            if (!result.Succeeded)
             {
+                var errorMessages = string.Join(", ", result.Errors.
+                    Select(e => e.Description));
 
-                throw new Exception("An argument exception occurred during role assigning.", ex);
-            }
-
-            catch (InvalidOperationException ex)
-            {
-                throw new Exception("An invalid operation occurred during role assigning.", ex);
-            }
-
-            catch (Exception ex)
-            {
-                throw new Exception("An unexpected error occurred during role assigning.", ex);
+                throw new Exception($"Role assignment failed: {string.Join(", ", result.Errors)}");
             }
 
         }
 
-        public void UpdateLoginDate(User user)
+        private void UpdateLoginDate(User user)
         {
             var today = DateTime.Now;
             user.LastLoginDate = today;

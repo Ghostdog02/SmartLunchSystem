@@ -63,6 +63,23 @@ namespace SmartLunch.Tests
         }
 
         [Fact]
+        public void GetClaims_WithNoClaimsProvided_ReturnsArgumentException()
+        {
+            //Arrange
+            var stubServiceProvider = new Mock<IServiceProvider>();
+            AccountController controller = new AccountController(stubServiceProvider.Object);
+
+            var identity = new ClaimsIdentity();
+
+            var principal = new ClaimsPrincipal(identity);
+            var authenticateResult = AuthenticateResult.Success(
+                new AuthenticationTicket(principal, GoogleDefaults.AuthenticationScheme));
+
+            //Act and Assert
+            Assert.Throws<ArgumentException>(() => controller.GetClaims(authenticateResult));
+        }
+
+        [Fact]
         public async Task Login_RedirectsToGoogleAuthentication()
         {
             // Arrange
@@ -105,6 +122,24 @@ namespace SmartLunch.Tests
                 It.Is<AuthenticationProperties>(props =>
                 props.RedirectUri == "/Account/GoogleResponse")),
                 Times.Once);
+        }
+
+        [Fact]
+        public void AuthenticateResultAsync_Succeed()
+        {
+            //Arrange 
+            var stubServiceProvider = new Mock<IServiceProvider>();
+            AccountController controller = new AccountController(stubServiceProvider.Object);
+
+            var authenticateResultMock = new Mock<AuthenticateResult>();
+
+            
+
+            //Act
+
+            //Assert
+
+
         }
     }
 }
