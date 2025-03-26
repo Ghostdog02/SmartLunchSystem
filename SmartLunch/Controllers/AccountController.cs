@@ -27,34 +27,16 @@ namespace SmartLunch.Controllers
 
         public async Task<IActionResult> GoogleResponse()
         {
-            AuthenticateResult authenticateResult = await AuthenticateResultAsync();
-
-            var claims = GetClaims(authenticateResult);
-
-            CreateUsers(claims).Wait();
-
-            return Json(claims);
-        }
-
-        private async Task CreateUsers(IEnumerable<Claim> claims)
-        {
-            var userCreation = new UsersCreation(serviceProvider);
-            await userCreation.CreateUserIfNotExistingAsync(claims);
-        }
-
-        private async Task<AuthenticateResult> AuthenticateResultAsync()
-        {
             try
             {
                 AuthenticateResult authenticateResult = await HttpContext.
                     AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
 
-                if (!authenticateResult.Succeeded)
-                {
-                    throw new Exception("Authentication has failed.", authenticateResult.Failure);
-                }
+                var claims = GetClaims(authenticateResult);
 
-                return authenticateResult;
+                CreateUsers(claims).Wait();
+
+                return Json(claims);
             }
 
             catch (InvalidOperationException ex)
@@ -66,6 +48,13 @@ namespace SmartLunch.Controllers
             {
                 throw new Exception("An unexpected error occurred during authentication.", ex);
             }
+            
+        }
+
+        private async Task CreateUsers(IEnumerable<Claim> claims)
+        {
+            var userCreation = new UsersCreation(serviceProvider);
+            await userCreation.CreateUserIfNotExistingAsync(claims);
         }
 
         public IEnumerable<Claim> GetClaims(AuthenticateResult authenticateResult)

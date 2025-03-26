@@ -19,11 +19,14 @@ namespace SmartLunch.Services
             try
             {
                 using var scope = ServiceProvider.CreateScope();
-                SmartLunchDbContext context = scope.ServiceProvider.GetRequiredService<SmartLunchDbContext>();
-                UserManager<User> userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
-                string email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value
-                    ?? throw new ArgumentException("Email claim is missing.");
+                SmartLunchDbContext context = scope.ServiceProvider.
+                    GetRequiredService<SmartLunchDbContext>();
+
+                UserManager<User> userManager = scope.ServiceProvider.
+                    GetRequiredService<UserManager<User>>();
+
+                string email = GetClaim(claims, ClaimTypes.Email, "Email");
 
                 User? currentUser = await userManager.FindByEmailAsync(email);
 
@@ -49,10 +52,11 @@ namespace SmartLunch.Services
             }
         }
 
-        private async Task<User> CreateUserAsync(UserManager<User> userManager, IEnumerable<Claim> claims)
+        private static async Task<User> CreateUserAsync(UserManager<User> userManager, 
+            IEnumerable<Claim> claims)
         {
-            string? firstName = claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value;
-            string? email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            string firstName = GetClaim(claims, ClaimTypes.GivenName, "First name");
+            string email = GetClaim(claims, ClaimTypes.Email, "Email");
 
             var user = new User
             {
@@ -63,36 +67,32 @@ namespace SmartLunch.Services
                 RegistrationDate = DateTime.Now
             };
 
-            var creationResult = await userManager.CreateAsync(user);
-            if (!creationResult.Succeeded)
-            {
-                var errorMessages = string.Join(", ", creationResult.Errors.
-                    Select(e => e.Description));
+            IdentityResult creationResult = await userManager.CreateAsync(user);
 
-                throw new Exception($"User creation failed: {errorMessages}");
-            }
+            var creationValidation = new IdentityResultValidator();
+            creationValidation.CheckSuccess(creationResult, "User creation failed");
 
             return user;
         }
 
-        private async Task AddRoleToUser(UserManager<User> userManager, User user)
+        private static async Task AddRoleToUser(UserManager<User> userManager, User user)
         {
             IdentityResult result = await userManager.AddToRoleAsync(user, "Parent");
 
-            if (!result.Succeeded)
-            {
-                var errorMessages = string.Join(", ", result.Errors.
-                    Select(e => e.Description));
-
-                throw new Exception($"Role assignment failed: {string.Join(", ", result.Errors)}");
-            }
-
+            var resultValidation = new IdentityResultValidator();
+            resultValidation.CheckSuccess(result, "Role assignment failed");
         }
 
-        private void UpdateLoginDate(User user)
+        private static void UpdateLoginDate(User user)
         {
             var today = DateTime.Now;
             user.LastLoginDate = today;
+        }
+
+        private static string GetClaim(IEnumerable<Claim> claims, string claimType, string claimName)
+        {
+            return claims.FirstOrDefault(claim => claim.Type == claimType).Value
+                ?? throw new ArgumentException($"{claimName} claim is missing.");
         }
     }
 }

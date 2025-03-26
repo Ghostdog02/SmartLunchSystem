@@ -123,23 +123,5 @@ namespace SmartLunch.Tests
                 props.RedirectUri == "/Account/GoogleResponse")),
                 Times.Once);
         }
-
-        [Fact]
-        public void AuthenticateResultAsync_Succeed()
-        {
-            //Arrange 
-            var stubServiceProvider = new Mock<IServiceProvider>();
-            AccountController controller = new AccountController(stubServiceProvider.Object);
-
-            var authenticateResultMock = new Mock<AuthenticateResult>();
-
-            
-
-            //Act
-
-            //Assert
-
-
-        }
     }
 }
