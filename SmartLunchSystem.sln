@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLunch.Database", "Smar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLunch.Tests", "SmartLunch.Tests\SmartLunch.Tests.csproj", "{4371B686-8344-44ED-A240-9A140B824621}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLunch.Database.Tests", "SmartLunch.Database.Tests\SmartLunch.Database.Tests.csproj", "{8B08C99B-77FF-453C-97E0-53ED54E85EAC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{4371B686-8344-44ED-A240-9A140B824621}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4371B686-8344-44ED-A240-9A140B824621}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4371B686-8344-44ED-A240-9A140B824621}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B08C99B-77FF-453C-97E0-53ED54E85EAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B08C99B-77FF-453C-97E0-53ED54E85EAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B08C99B-77FF-453C-97E0-53ED54E85EAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B08C99B-77FF-453C-97E0-53ED54E85EAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

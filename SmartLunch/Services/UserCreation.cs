@@ -5,11 +5,11 @@ using System.Security.Claims;
 
 namespace SmartLunch.Services
 {
-    public class UsersCreation
+    public class UserCreation
     {
         private IServiceProvider ServiceProvider { get; }
 
-        public UsersCreation(IServiceProvider serviceProvider)
+        public UserCreation(IServiceProvider serviceProvider)
         {
             ServiceProvider = serviceProvider;
         }

@@ -13,15 +13,6 @@ namespace SmartLunch.Tests
 {
     public class AccountControllerTests
     {
-        //private readonly Mock<IServiceProvider> stubServiceProvider;
-        //private readonly AccountController controller;
-
-        //public AccountControllerTests()
-        //{
-        //    stubServiceProvider = new Mock<IServiceProvider>();
-        //    controller = new AccountController(stubServiceProvider.Object);
-        //}
-
         [Fact]
         public void GetClaims_WithProvidedEmailRoleName_ReturnsIEnumarableWithEmailRoleName()
         {

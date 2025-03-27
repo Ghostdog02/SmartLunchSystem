@@ -31,26 +31,6 @@ namespace SmartLunch
                 //options.CallbackPath = "/signin-google";
 
             });
-            //builder.Services.AddAuthentication(options =>
-            //{
-            //    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            //    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-            //})
-            //.AddCookie()
-            //.AddOpenIdConnect(options =>
-            //{
-            //    options.Authority = "https://accounts.google.com";
-            //    options.ClientId = builder.Configuration["OpenId:ClientId"];
-            //    options.ClientSecret = builder.Configuration["OpenId:ClientSecret"];
-            //    options.ResponseType = "code";
-            //    options.SaveTokens = true;
-
-            //    options.Scope.Add("openid");
-            //    options.Scope.Add("profile");
-            //    options.Scope.Add("email");
-
-            //    options.CallbackPath = "/signin-oidc";
-            //});
 
             builder.Services.AddControllersWithViews();
 

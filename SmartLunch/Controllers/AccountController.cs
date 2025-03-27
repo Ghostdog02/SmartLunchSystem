@@ -53,7 +53,7 @@ namespace SmartLunch.Controllers
 
         private async Task CreateUsers(IEnumerable<Claim> claims)
         {
-            var userCreation = new UsersCreation(serviceProvider);
+            var userCreation = new UserCreation(serviceProvider);
             await userCreation.CreateUserIfNotExistingAsync(claims);
         }
 
