@@ -11,8 +11,6 @@ A modern ASP.NET Core MVC platform for managing school meal coupon bookings, des
 
 ### Core Functionality
 - Secure authentication via **Google's API**
-- Meal booking management system
-- Real-time meal preparation tracking
 - User-friendly interface with responsive design
 - SQL Server database integration for reliable data storage
 
@@ -43,7 +41,6 @@ A modern ASP.NET Core MVC platform for managing school meal coupon bookings, des
 | **Database**             | MS SQL Server 2022                  |
 | **ORM**                  | Entity Framework Core 9             |
 | **Frontend**             | Razor Views                         |
-| **CI/CD**                | GitHub Actions (Optional)           |
 
 ## Getting Started
 
