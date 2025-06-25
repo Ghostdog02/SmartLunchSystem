@@ -1,31 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Projects\\SmartLunchSystem\\SmartLunch.Database\\SmartLunch.Database.csproj": {}
+    "/home/alexvesely/Projects/SmartLunchSystem/SmartLunch.Database/SmartLunch.Database.csproj": {}
   },
   "projects": {
-    "D:\\Projects\\SmartLunchSystem\\SmartLunch.Database\\SmartLunch.Database.csproj": {
+    "/home/alexvesely/Projects/SmartLunchSystem/SmartLunch.Database/SmartLunch.Database.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Projects\\SmartLunchSystem\\SmartLunch.Database\\SmartLunch.Database.csproj",
+        "projectUniqueName": "/home/alexvesely/Projects/SmartLunchSystem/SmartLunch.Database/SmartLunch.Database.csproj",
         "projectName": "SmartLunch.Database",
-        "projectPath": "D:\\Projects\\SmartLunchSystem\\SmartLunch.Database\\SmartLunch.Database.csproj",
-        "packagesPath": "C:\\Users\\Alexander\\.nuget\\packages\\",
-        "outputPath": "D:\\Projects\\SmartLunchSystem\\SmartLunch.Database\\obj\\",
+        "projectPath": "/home/alexvesely/Projects/SmartLunchSystem/SmartLunch.Database/SmartLunch.Database.csproj",
+        "packagesPath": "/home/alexvesely/.nuget/packages/",
+        "outputPath": "/home/alexvesely/Projects/SmartLunchSystem/SmartLunch.Database/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Alexander\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/alexvesely/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -87,7 +81,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/opt/dotnet/sdk/9.0.202/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
