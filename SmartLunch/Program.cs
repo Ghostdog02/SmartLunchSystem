@@ -14,6 +14,14 @@ namespace SmartLunch
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddControllersWithViews();
+
+            //builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
+            //options.SignIn.RequireConfirmedAccount = true)
+            //    .AddRoles<IdentityRole<int>>()
+            //    .AddEntityFrameworkStores<SmartLunchDbContext>()
+            //    .AddDefaultTokenProviders();
+
             // Add services to the container.
             builder.Services.AddAuthentication(options =>
             {
@@ -31,19 +39,6 @@ namespace SmartLunch
                 //options.CallbackPath = "/signin-google";
 
             });
-
-            builder.Services.AddControllersWithViews();
-
-            var connectionString = builder.Configuration.GetConnectionString("SmartLunchContextConnection");
-
-            builder.Services.AddDbContext<SmartLunchDbContext>(options =>
-                options.UseSqlServer(connectionString));
-
-            builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
-            options.SignIn.RequireConfirmedAccount = true)
-                .AddRoles<IdentityRole<int>>()
-                .AddEntityFrameworkStores<SmartLunchDbContext>()
-                .AddDefaultTokenProviders();
 
             builder.Services.Configure<IdentityOptions>(options =>
             {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SmartLunch.Api.Dtos;
 using SmartLunch.Database;
-using System.Security.Claims;
 
 namespace SmartLunch.Services
 {
@@ -14,7 +14,7 @@ namespace SmartLunch.Services
             ServiceProvider = serviceProvider;
         }
 
-        public async Task CreateUserIfNotExistingAsync(IEnumerable<Claim> claims)
+        public async Task CreateUserIfNotExistingAsync(ClaimsDto claimsDto)
         {
             try
             {
@@ -26,13 +26,13 @@ namespace SmartLunch.Services
                 UserManager<User> userManager = scope.ServiceProvider.
                     GetRequiredService<UserManager<User>>();
 
-                string email = GetClaim(claims, ClaimTypes.Email, "Email");
+                string email = claimsDto.Email!;
 
                 User? currentUser = await userManager.FindByEmailAsync(email);
 
                 if (currentUser == null)
                 {
-                    currentUser = await CreateUserAsync(userManager, claims);
+                    currentUser = await CreateUserAsync(userManager, claimsDto);
                     await AddRoleToUser(userManager, currentUser);
                 }
 
@@ -53,10 +53,10 @@ namespace SmartLunch.Services
         }
 
         private static async Task<User> CreateUserAsync(UserManager<User> userManager, 
-            IEnumerable<Claim> claims)
+            ClaimsDto claimsDto)
         {
-            string firstName = GetClaim(claims, ClaimTypes.GivenName, "First name");
-            string email = GetClaim(claims, ClaimTypes.Email, "Email");
+            string firstName = claimsDto.FirstName!;
+            string email = claimsDto.Email!;
 
             var user = new User
             {
@@ -87,12 +87,6 @@ namespace SmartLunch.Services
         {
             var today = DateTime.Now;
             user.LastLoginDate = today;
-        }
-
-        private static string GetClaim(IEnumerable<Claim> claims, string claimType, string claimName)
-        {
-            return claims.FirstOrDefault(claim => claim.Type == claimType).Value
-                ?? throw new ArgumentException($"{claimName} claim is missing.");
         }
     }
 }

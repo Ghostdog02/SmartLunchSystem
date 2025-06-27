@@ -1,0 +1,6 @@
+@SmartLunch.Api_HostAddress = http://localhost:5116
+
+# GET {{SmartLunch.Api_HostAddress}}/weatherforecast/
+# Accept: application/json
+
+GET https://localhost:7152/api/userManagement

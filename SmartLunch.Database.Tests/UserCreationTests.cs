@@ -1,4 +1,5 @@
 ﻿using Moq;
+using SmartLunch.Api.Dtos;
 using SmartLunch.Services;
 using System.Security.Claims;
 
@@ -8,7 +9,7 @@ namespace SmartLunch.Database.Tests
     {
         public TestDatabaseFixture Fixture { get; }
 
-        public UserCreationTests(TestDatabaseFixture fixture) 
+        public UserCreationTests(TestDatabaseFixture fixture)
         {
             Fixture = fixture;
         }
@@ -22,24 +23,17 @@ namespace SmartLunch.Database.Tests
 
             var serviceProviderStub = new Mock<IServiceProvider>();
 
-            var claims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.Name, "Test User"),
-                new Claim(ClaimTypes.Email, "test@example.com"),
-                new Claim(ClaimTypes.Role, "Admin"),
-                new Claim(ClaimTypes.GivenName, "Test"),
-                new Claim(ClaimTypes.MobilePhone, "123456789")
-            };
+            var claimsDto = new ClaimsDto("test@example.com", "Test");
 
             var userService = new UserCreation(serviceProviderStub.Object);
 
             //Act
-            await userService.CreateUserIfNotExistingAsync(claims);
+            await userService.CreateUserIfNotExistingAsync(claimsDto);
 
             context.ChangeTracker.Clear();
 
             //Assert
-            bool doesContainUser = 
+            bool doesContainUser =
                 context.Users.Any(user => user.Email == "test@example.com");
 
             Assert.True(doesContainUser);

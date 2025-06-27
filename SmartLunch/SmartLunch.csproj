@@ -20,9 +20,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+	<PackageReference Include="Google.Apis.Auth.AspNetCore3" Version="1.70.0" />
+
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SmartLunch.Api\SmartLunch.Api.csproj" />
     <ProjectReference Include="..\SmartLunch.Database\SmartLunch.Database.csproj" />
   </ItemGroup>
 

@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Google.Apis.Auth.AspNetCore3;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartLunch.Api.Dtos;
 using SmartLunch.Services;
 using System.Security.Claims;
 
@@ -17,6 +20,25 @@ namespace SmartLunch.Controllers
             this.serviceProvider = serviceProvider;
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Logout()
+        {
+            // This will:
+            //  1) clear your local auth cookie
+            //  2) send a sign‐out message to Google OIDC middleware
+            var props = new AuthenticationProperties
+            {
+                // After sign‐out, redirect back home (or wherever you like)
+                RedirectUri = Url.Action("Index", "Home")
+            };
+
+            return SignOut(
+                props,
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                GoogleOpenIdConnectDefaults.AuthenticationScheme
+            );
+        }
         public async Task Login()
         {
             await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, new AuthenticationProperties()
@@ -32,11 +54,26 @@ namespace SmartLunch.Controllers
                 AuthenticateResult authenticateResult = await HttpContext.
                     AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
 
-                var claims = GetClaims(authenticateResult);
+                if (!authenticateResult.Succeeded)
+                {
+                    throw new InvalidOperationException("Authentication failed.");
+                }
 
-                CreateUsers(claims).Wait();
+                if (authenticateResult.Principal == null)
+                {
+                    throw new InvalidOperationException("No principal found in the authentication result.");
+                }
 
-                return Json(claims);
+                //var claims = GetClaims(authenticateResult);
+                //ClaimsDto claimsDto = claims.ToClaimsDto()
+                //    ?? throw new InvalidOperationException("No valid claims found in the principal.");
+
+                //await CreateUsers(claimsDto);
+
+                
+
+                return RedirectToAction("Index", "Home");
+                //return Json(claimDto);
             }
 
             catch (InvalidOperationException ex)
@@ -51,10 +88,10 @@ namespace SmartLunch.Controllers
             
         }
 
-        private async Task CreateUsers(IEnumerable<Claim> claims)
+        private async Task CreateUsers(ClaimsDto claimsDto)
         {
             var userCreation = new UserCreation(serviceProvider);
-            await userCreation.CreateUserIfNotExistingAsync(claims);
+            await userCreation.CreateUserIfNotExistingAsync(claimsDto);
         }
 
         public IEnumerable<Claim> GetClaims(AuthenticateResult authenticateResult)
