@@ -10,14 +10,14 @@
         "projectUniqueName": "D:\\Projects\\SmartLunchSystem\\SmartLunch.Database\\SmartLunch.Database.csproj",
         "projectName": "SmartLunch.Database",
         "projectPath": "D:\\Projects\\SmartLunchSystem\\SmartLunch.Database\\SmartLunch.Database.csproj",
-        "packagesPath": "C:\\Users\\Alexander\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\alexv\\.nuget\\packages\\",
         "outputPath": "D:\\Projects\\SmartLunchSystem\\SmartLunch.Database\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Alexander\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\alexv\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -52,23 +52,23 @@
           "dependencies": {
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[9.0.2, )"
+              "version": "[9.0.6, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.2, )"
+              "version": "[9.0.6, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[9.0.2, )"
+              "version": "[9.0.6, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.2, )"
+              "version": "[9.0.6, )"
             }
           },
           "imports": [
