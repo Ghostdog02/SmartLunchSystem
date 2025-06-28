@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SmartLunch.Api.Mapping;
 using SmartLunch.Database;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,7 +10,7 @@ namespace SmartLunch.Api.Controllers
 {
     [Route("api/userManagement")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class UserManagementController : ControllerBase
     {
         private readonly SmartLunchDbContext _context;
@@ -22,9 +23,9 @@ namespace SmartLunch.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<List<User>>> GetAsync()
         {
-            var users = await _context.Users.ToListAsync();
+            var users = await _context.Users.MapUsersToDtos().ToListAsync();
 
-            if (users == null || !users.Any())
+            if (users == null || users.Count == 0)
             {
                 return NotFound("No users found.");
             }
@@ -34,9 +35,18 @@ namespace SmartLunch.Api.Controllers
 
         // GET api/userManagement/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<User>> GetAsync(int id)
         {
-            return "value";
+            var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound($"User with ID {id} not found.");
+            }
+
+            var dto = user.MapUserToDto();
+
+            return Ok(dto);
         }
 
         // POST api/<UserManagementController>

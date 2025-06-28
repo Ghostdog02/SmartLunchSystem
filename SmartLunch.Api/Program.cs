@@ -10,11 +10,16 @@ namespace SmartLunch.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            
-
             // Add services to the container.
+            var connectionString = builder.Configuration.GetConnectionString("SmartLunchContextConnection");
+            builder.Services.AddDbContext<SmartLunchDbContext>(options =>
+                options.UseSqlServer(connectionString));
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                   .ConfigureApiBehaviorOptions(options =>
+                   {
+                       options.SuppressModelStateInvalidFilter = true;
+                   });
 
             builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
             options.SignIn.RequireConfirmedAccount = true)
@@ -22,10 +27,7 @@ namespace SmartLunch.Api
                 .AddEntityFrameworkStores<SmartLunchDbContext>()
                 .AddDefaultTokenProviders();
 
-            var connectionString = builder.Configuration.GetConnectionString("SmartLunchContextConnection");
-
-            builder.Services.AddDbContext<SmartLunchDbContext>(options =>
-                options.UseSqlServer(connectionString));
+            
 
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
