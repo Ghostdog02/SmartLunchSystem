@@ -1,9 +1,21 @@
-@SmartLunch.Api_HostAddress =  https://localhost:7152
+@apiBaseUrl =  https://localhost:7152
 
-# GET {{SmartLunch.Api_HostAddress}}/weatherforecast/
+# GET {{apiBaseUrl}}/weatherforecast/
 # Accept: application/json
 
-GET {{SmartLunch.Api_HostAddress}}/api/userManagement
+GET {{apiBaseUrl}}/api/userManagement
 
 ###
-GET {{SmartLunch.Api_HostAddress}}/api/userManagement/1
+GET {{apiBaseUrl}}/api/userManagement/1
+
+###
+POST {{apiBaseUrl}}/api/userManagement
+Content-Type: application/json
+
+{
+    "email": "ghostdog09128@gmail.com",
+    "lastLoginDate": "2023-10-01T00:00:00",
+    "fullName": "Ghost Dog",
+    "phoneNumber": "1234567890"
+}
+

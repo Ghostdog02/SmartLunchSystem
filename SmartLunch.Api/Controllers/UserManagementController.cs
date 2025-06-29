@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SmartLunch.Api.Dtos;
 using SmartLunch.Api.Mapping;
 using SmartLunch.Database;
 
@@ -34,7 +35,7 @@ namespace SmartLunch.Api.Controllers
         }
 
         // GET api/userManagement/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetUserById")]
         public async Task<ActionResult<User>> GetAsync(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -49,10 +50,20 @@ namespace SmartLunch.Api.Controllers
             return Ok(dto);
         }
 
-        // POST api/<UserManagementController>
+        // POST api/userManagement
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult> PostAsync([FromBody] UserCreationDto newUser)
         {
+            User user = newUser.ToEnity();
+
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+
+            var readDto = user.MapUserToDto();
+
+            return CreatedAtAction("GetUserById",
+                                  new { id = user.Id },
+                                  value: readDto);
         }
 
         // PUT api/<UserManagementController>/5
