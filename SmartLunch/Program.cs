@@ -36,9 +36,16 @@ namespace SmartLunch
 
             builder.Services.AddControllersWithViews();
             var connectionString = builder.Configuration.GetConnectionString("SmartLunchContextConnection");
-            //builder.Services.AddDbContext<CouponsContext>(options => options.UseSqlServer(connectionString));
+
             builder.Services.AddDbContext<SmartLunchDbContext>(options =>
-                options.UseSqlServer(connectionString));
+                options.UseSqlServer(connectionString,
+                    sqloptions => sqloptions
+                        .EnableRetryOnFailure(
+                            maxRetryCount: 5,
+                            maxRetryDelay: TimeSpan.FromSeconds(10),
+                            errorNumbersToAdd: null
+                        )
+                ));
 
             builder.Services.AddIdentity<User, IdentityRole<int>>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole<int>>()
@@ -53,7 +60,7 @@ namespace SmartLunch
                 options.Lockout.AllowedForNewUsers = true;
             });
 
-            
+
 
             var app = builder.Build();
 
@@ -88,29 +95,19 @@ namespace SmartLunch
         static async Task ApplyMigrations(WebApplication app)
         {
             using var scope = app.Services.CreateScope();
-            var cancelationTokenSource = new CancellationTokenSource();
-            cancelationTokenSource.CancelAfter(TimeSpan.FromMinutes(5));
 
             var services = scope.ServiceProvider;
-            var logger = services.GetRequiredService<ILogger<Program>>();
+
             var dbContext = services.GetRequiredService<SmartLunchDbContext>();
 
             try
             {
-                logger.LogInformation("Starting to apply database migrations...");
-
-                // Apply any pending migrations
-                await dbContext.Database.MigrateAsync(cancelationTokenSource.Token);
-
-                logger.LogInformation("Database migrations applied successfully.");
+                await dbContext.Database.MigrateAsync();
             }
 
-            catch (Exception ex)
+            catch (Exception)
             {
-                // Log the exception if migrations fail
-                logger.LogError(ex, "An error occurred while applying database migrations.");
-
-                throw;
+                throw new Exception($"Something went wrong while applying migrations");
             }
         }
     }

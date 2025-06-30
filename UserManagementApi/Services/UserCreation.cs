@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using SmartLunch.Database;
 using System.Security.Claims;
 using Microsoft.Extensions.DependencyInjection;

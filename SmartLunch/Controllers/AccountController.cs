@@ -39,12 +39,12 @@ namespace SmartLunch.Controllers
                 return RedirectToAction("LoginFailed");
             }
 
-            // Extract user claims
+            // Extract user claimsms sql
             var claims = authenticateResult.Principal.Claims;
 
-            var usersCreation = new UsersCreation(HttpContext.RequestServices);
-            await usersCreation.CreateUserIfNotExistingAsync(claims);
-
+            // var usersCreation = new UsersCreation(HttpContext.RequestServices);
+            //await usersCreation.CreateUserIfNotExistingAsync(claims);
+            
             return RedirectToAction("Index", "Home");
         }
 

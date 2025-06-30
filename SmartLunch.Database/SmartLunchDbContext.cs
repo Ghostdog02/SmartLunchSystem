@@ -5,13 +5,9 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace SmartLunch.Database
 {
-    public class SmartLunchDbContext : IdentityDbContext<User, IdentityRole<int>, int>
+    public class SmartLunchDbContext(DbContextOptions options) 
+                        : IdentityDbContext<User, IdentityRole<int>, int>(options)
     {
-        public SmartLunchDbContext(DbContextOptions options)
-            : base(options)
-        {
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -53,7 +49,8 @@ namespace SmartLunch.Database
         }
     }
 
-    public class CustomRoleStore : RoleStore<IdentityRole<int>, SmartLunchDbContext, int>
+    public class CustomRoleStore : RoleStore<IdentityRole<int>,
+        SmartLunchDbContext, int>
     {
         public CustomRoleStore(SmartLunchDbContext context)
             : base(context)
