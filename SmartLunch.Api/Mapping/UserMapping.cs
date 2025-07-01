@@ -8,7 +8,7 @@ namespace SmartLunch.Api.Mapping
     {
         public static UserDetailsDto MapUserToDto(this User user)
         {
-            UserDetailsDto dto = new (user.Id,
+            UserDetailsDto dto = new(user.Id,
                                             user.Email!,
                                             user.LastLoginDate,
                                             user.UserName!);
@@ -23,12 +23,23 @@ namespace SmartLunch.Api.Mapping
             return users.Select(user => user.MapUserToDto());
         }
 
-        public static User ToEnity(this UserCreationDto dto)
+        public static User ToEntity(this UserCreationDto dto)
         {
             return new User
             {
                 Email = dto.Email,
                 LastLoginDate = dto.LastLoginDate,
+                UserName = dto.FullName,
+                PhoneNumber = dto.PhoneNumber
+            };
+        }
+        
+        public static User ToEntity(this UpdatedUserDto dto, int id)
+        {
+            return new User
+            {
+                Id = id,
+                Email = dto.Email,
                 UserName = dto.FullName,
                 PhoneNumber = dto.PhoneNumber
             };

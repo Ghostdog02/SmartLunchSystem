@@ -11,7 +11,7 @@ namespace SmartLunch.Api
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            var connectionString = builder.Configuration.GetConnectionString("SmartLunchContextConnection");
+            var connectionString = builder.Configuration.GetConnectionString("SmartLunchConnection");
             builder.Services.AddDbContext<SmartLunchDbContext>(options =>
                 options.UseSqlServer(connectionString));
 

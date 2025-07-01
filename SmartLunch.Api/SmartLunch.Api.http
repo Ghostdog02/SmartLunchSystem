@@ -1,4 +1,4 @@
-@apiBaseUrl =  https://localhost:7152
+@apiBaseUrl =  http://localhost:5116
 
 # GET {{apiBaseUrl}}/weatherforecast/
 # Accept: application/json
@@ -18,4 +18,17 @@ Content-Type: application/json
     "fullName": "Ghost Dog",
     "phoneNumber": "1234567890"
 }
+
+###
+PUT {{apiBaseUrl}}/api/userManagement/1
+Content-Type: application/json
+
+{
+    "email": "@gmail.com",
+    "fullName": "Dog",
+    "phoneNumber": "990900932"
+}
+
+###
+DELETE {{apiBaseUrl}}/api/userManagement/1
 
