@@ -1,4 +1,4 @@
-# 🌐 Cross-Platform MVC Web Application with Google Authentication & Role-Based Access
+# 🌐 DevGuard is a Cross-Platform MVC Web Application with Google Authentication & Role-Based Access
 
 ## 🚀 Overview
 
@@ -21,8 +21,8 @@ Whether you're running Linux or Windows, this project is designed to be easily c
   - Login with **Google** using OAuth2
   - Microsoft Identity used for user management and **role-based authorisation**
   
-- 🗂 **MVC Architecture**
-  - Separation of concerns for better maintainability and testability
+- 🏗️ **MVC Architecture**
+  - Separation of concerns for better maintainability, testability and scalability
 
 - 🌐 **RESTful API Controller**
   - Backend API for data access and integration
@@ -34,23 +34,24 @@ Whether you're running Linux or Windows, this project is designed to be easily c
 - 🧪 **Comprehensive Testing**
   - Uses **xUnit** for:
     - Unit tests for controllers and services
-    - Integration tests for database operations
     - End-to-end test scenarios
 
 - 🖥️ **Cross-Platform Support**
-  - Works on both **Ubuntu 24.04** and **Windows 11**
+  - Works on both **Ubuntu 24.04** and **Windows 10/11**
 
 ---
 
 ## 🛠️ Tech Stack
 
 - **ASP.NET Core MVC**
-- **Entity Framework Core**
+- **ASP.NET Core Web API (Controller API)**
+- **Entity Framework Core 9**
 - **Microsoft Identity**
 - **Google OAuth2**
 - **xUnit**
-- **SQL Server / SQLite**
+- **SQL Server 2022/SQLite**
 - **C# 12+**
+- **Docker**
 
 ---
 
@@ -60,10 +61,12 @@ Follow these instructions to run the app locally:
 
 ### 1. 🧱 Prerequisites
 
-- [.NET 9.0.107 SDK](https://dotnet.microsoft.com/download)
+- [.NET 9 SDK](https://dotnet.microsoft.com/download) All versions of the sdk work for Windows 10/11
+- [.NET 9 SDK](https://dotnet.microsoft.com/download) Install 9.0.107 for Ubuntu 24.04
 - [Git](https://git-scm.com/)
-- SQL Server (or use SQLite if configured)
-- (Optional) Visual Studio 2022+ or VS Code
+- For Windows 10/11 - SQL Server (or use SQLite if configured)
+- For Linux Ubuntu - [SQL Server Container with Docker](https://learn.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker?view=sql-server-linux-ver17&preserve-view=true&tabs=cli&pivots=cs1-bash#pullandrun2025) (or use SQLite if configured)
+- IDE - Visual Studio 2022+ or VS Code
 
 ### 2. 📦 Clone the Repository
 
@@ -73,7 +76,7 @@ cd your-repo-name
 ```
 
 ### 3. 🔐 Obtain OAuth 2.0 credentials from the Google API Console.
-Visit the Google API Console to obtain OAuth 2.0 credentials such as a client ID and client secret that are known to both Google and your application.
+Visit the [Google API Console](https://console.developers.google.com/) to obtain OAuth 2.0 credentials such as a client ID and client secret that are known to both Google and your application.
 
 
 ### 4. 🔧 Configure the Web App
@@ -89,15 +92,40 @@ Update appsettings.json or secrets.json with your own:
 }
 ```
 
-### 4. 🔧 Configure the API for Windows 11
+### 5.1. 🔧 Configure the API for Windows 11
 
+Update appsettings.json or secrets.json with your own (The following example uses sql-server with Windows authentication):
+
+```json
+"ConnectionStrings": {
+    "SmartLunchContextConnection": "Server=localhost;Database=SmartLunchSystem;Trusted_Connection=True;MultipleActiveResultSets=true;Integrated Security=true"
+  }
+```
+### 5.2. 🔧 Configure the API for Linux Ubuntu 24.04
 Update appsettings.json or secrets.json with your own:
 
 ```json
-"Authentication": {
-  "Google": {
-    "ClientId": "YOUR_GOOGLE_CLIENT_ID",
-    "ClientSecret": "YOUR_GOOGLE_CLIENT_SECRET"
+"ConnectionStrings": {
+    "SmartLunchConnection": "Server=localhost;Database=SmartLunchSystem;User Id=sa;Password=YourStrong!Passw0rd;Integrated Security=false;TrustServerCertificate=True;"
   }
-}
 ```
+
+### 6. 🛠 Run Migrations
+
+```bash
+dotnet ef database update
+```
+Ensure the correct database provider is configured (e.g., SQL Server or SQLite).
+
+### 7. ▶️ Run the Application
+
+```bash
+dotnet run
+```
+
+🔐 Roles & Permissions
+You can assign roles to users via the database or admin panel (if included). Examples:
+
+Admin – Full access to all controllers and actions
+
+User – Limited access based on permissions
