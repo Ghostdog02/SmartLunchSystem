@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartLunch.Api.Dtos;
+using SmartLunch.Api.Mapping;
 using SmartLunch.Services;
 using System.Security.Claims;
 
@@ -64,11 +65,11 @@ namespace SmartLunch.Controllers
                     throw new InvalidOperationException("No principal found in the authentication result.");
                 }
 
-                //var claims = GetClaims(authenticateResult);
-                //ClaimsDto claimsDto = claims.ToClaimsDto()
-                //    ?? throw new InvalidOperationException("No valid claims found in the principal.");
+                var claims = GetClaims(authenticateResult);
+                ClaimsDto claimsDto = claims.ToClaimsDto()
+                   ?? throw new InvalidOperationException("No valid claims found in the principal.");
 
-                //await CreateUsers(claimsDto);
+                await CreateUser(claimsDto);
 
                 
 
@@ -88,10 +89,14 @@ namespace SmartLunch.Controllers
             
         }
 
-        private async Task CreateUsers(ClaimsDto claimsDto)
+        private async Task CreateUser(ClaimsDto claimsDto)
         {
-            var userCreation = new UserCreation(serviceProvider);
-            await userCreation.CreateUserIfNotExistingAsync(claimsDto);
+            var dto = claimsDto.ToUserCreationDto()
+                ?? throw new InvalidOperationException("Failed to convert claims to UserCreationDto.");
+
+            
+            // var userCreation = new UserCreation(serviceProvider);
+            // await userCreation.CreateUserIfNotExistingAsync(claimsDto);
         }
 
         public IEnumerable<Claim> GetClaims(AuthenticateResult authenticateResult)
