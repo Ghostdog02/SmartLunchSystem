@@ -3,8 +3,7 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace SmartLunch.Database
 {
-    public class SmartLunchDbContextFactory
-        : IDesignTimeDbContextFactory<SmartLunchDbContext>
+    public class SmartLunchDbContextFactory : IDesignTimeDbContextFactory<SmartLunchDbContext>
     {
         public SmartLunchDbContext CreateDbContext(string[] args)
         {
@@ -12,7 +11,7 @@ namespace SmartLunch.Database
 
             // either hard-code your conn-string:
             optionsBuilder.UseSqlServer(
-                "Server=localhost;Database=SmartLunchSystem;Trusted_Connection=True;Encrypt=True;TrustServerCertificate=True;"
+                "Server=localhost;Database=SmartLunchSystem;User Id=sa;Password=YourStrong!Passw0rd;Integrated Security=false;TrustServerCertificate=True;"
             );
 
             // or pull from a JSON file / env-var:
