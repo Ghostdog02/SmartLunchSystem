@@ -1,18 +1,18 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Net;
+using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SmartLunch.Api.Dtos;
 using SmartLunch.Database;
 
 namespace SmartLunch.Services
 {
-    public class UserCreation
+    public class UserCreation(IServiceProvider serviceProvider,
+            IHttpClientFactory httpClientFactory)
     {
-        private IServiceProvider ServiceProvider { get; }
+        private IServiceProvider ServiceProvider { get; } = serviceProvider;
 
-        public UserCreation(IServiceProvider serviceProvider)
-        {
-            ServiceProvider = serviceProvider;
-        }
+        public IHttpClientFactory HttpClientFactory { get; } = httpClientFactory;
 
         public async Task CreateUserIfNotExistingAsync(ClaimsDto claimsDto)
         {
@@ -20,19 +20,67 @@ namespace SmartLunch.Services
             {
                 using var scope = ServiceProvider.CreateScope();
 
+                var client = HttpClientFactory.CreateClient("UserManagement_Api_Client");
+
                 SmartLunchDbContext context = scope.ServiceProvider.
                     GetRequiredService<SmartLunchDbContext>();
 
                 UserManager<User> userManager = scope.ServiceProvider.
                     GetRequiredService<UserManager<User>>();
 
+
+
                 string email = claimsDto.Email!;
 
-                User? currentUser = await userManager.FindByEmailAsync(email);
+                // User? currentUser = await userManager.FindByEmailAsync(email);
+                // User user = await client.GetAsync<User>($"api/users/email/{email}");    
+                var getResponse = await client.GetAsync($"api/userManagement/{email}");
 
-                if (currentUser == null)
+                if (!getResponse.IsSuccessStatusCode)
                 {
-                    currentUser = await CreateUserAsync(userManager, claimsDto);
+                    var userData = new UserCreationDto(0,
+                                                       email,
+                                                       DateTime.Now,
+                                                       claimsDto.FullName,
+                                                       claimsDto.PhoneNumber);
+
+                    var postResponse = await client.PostAsJsonAsync($"api/userManagement",
+                        userData);
+
+                    if (!postResponse.IsSuccessStatusCode)
+                    {
+                        throw postResponse.StatusCode switch
+                        {
+                            HttpStatusCode.BadRequest =>
+                                new ArgumentException("Invalid user data provided"),
+
+                            HttpStatusCode.Conflict =>
+                                new InvalidOperationException("User already exists"),
+
+                            HttpStatusCode.Unauthorized =>
+                                new UnauthorizedAccessException("Authentication required"),
+
+                            _ => new HttpRequestException($"Request failed: {postResponse.StatusCode}"),
+                        };
+                    }
+                    
+                    else
+                    {
+                        
+                    }
+                }
+
+                else
+                {
+                    User? user = await getResponse.Content.ReadFromJsonAsync<User>();
+
+                    if (user == null)
+                    {
+                        throw new InvalidOperationException(
+                            $"Failed to deserialize user data from response");
+                    }
+
+                    user = await CreateUserAsync(userManager, claimsDto);
                     await AddRoleToUser(userManager, currentUser);
                 }
 
@@ -83,10 +131,10 @@ namespace SmartLunch.Services
             resultValidation.CheckSuccess(result, "Role assignment failed");
         }
 
-        private static void UpdateLoginDate(User user)
-        {
-            var today = DateTime.Now;
-            user.LastLoginDate = today;
-        }
+        // private static void UpdateLoginDate(User user)
+        // {
+        //     var today = DateTime.Now;
+        //     user.LastLoginDate = today;
+        // }
     }
 }

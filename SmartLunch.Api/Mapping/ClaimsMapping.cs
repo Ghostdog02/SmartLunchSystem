@@ -18,7 +18,7 @@ namespace SmartLunch.Api.Mapping
             this ClaimsDto dto)
         {
             return new UserCreationDto
-            (   0, // Id will be set later
+            (0, // Id will be set later
                 dto.Email,
                 DateTime.UtcNow, // LastLoginDate set to current time
                 dto.FullName,

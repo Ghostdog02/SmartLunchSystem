@@ -1,8 +1,9 @@
 
 namespace SmartLunch.Api.Dtos
 {
-    public record UpdatedUserDto(string Email,
-                             string FullName,
-                             string PhoneNumber);
+    public record UpdatedUserDto(int Id,
+                                 string Email,
+                                 string FullName,
+                                 string PhoneNumber);
 
 }

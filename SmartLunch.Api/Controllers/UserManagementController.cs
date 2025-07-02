@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SmartLunch.Api.Dtos;
@@ -15,9 +16,13 @@ namespace SmartLunch.Api.Controllers
     public class UserManagementController : ControllerBase
     {
         private readonly SmartLunchDbContext _context;
-        public UserManagementController(SmartLunchDbContext context)
+        private readonly  UserManager<User> _userManager;
+
+        public UserManagementController(SmartLunchDbContext context,
+                                        UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: api/userManagement
@@ -35,7 +40,7 @@ namespace SmartLunch.Api.Controllers
         }
 
         // GET api/userManagement/5
-        [HttpGet("{id}", Name = "GetUserById")]
+        [HttpGet("{id:int}", Name = "GetUserById")]
         public async Task<ActionResult<UserDetailsDto>> GetAsync(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -50,19 +55,42 @@ namespace SmartLunch.Api.Controllers
             return Ok(dto);
         }
 
+        // GET api/userManagement/example@gmail.com
+        [HttpGet("{email}", Name = "GetUserByEmail")]
+        public async Task<ActionResult<UserDetailsDto>> GetAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return NotFound($"User with ID {email} not found.");
+            }
+
+            UserDetailsDto dto = user.MapUserToDto();
+
+            return Ok(dto);
+        }
+
+
+
         // POST api/userManagement
         [HttpPost]
         public async Task<ActionResult> PostAsync([FromBody] UserCreationDto newUser)
         {
-            if (_context.Users.Any(u => u.Email == newUser.Email))
+            if (await _userManager.FindByEmailAsync(newUser.Email) != null)
             {
                 return Conflict($"User with email {newUser.Email} already exists.");
             }
 
             User user = newUser.ToEntity();
 
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
+            // await _context.Users.AddAsync(user);
+            var result = await _userManager.CreateAsync(user);
+
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+
+            // await _context.SaveChangesAsync();
 
             var readDto = user.MapUserToDto();
 
@@ -71,22 +99,45 @@ namespace SmartLunch.Api.Controllers
                                   value: readDto);
         }
 
+        // // POST api/userManagement
+        // [HttpPost]
+        // public async Task<ActionResult> PostAsync([FromBody] UserCreationDto newUser)
+        // {
+        //     if (_context.Users.Any(u => u.Email == newUser.Email))
+        //     {
+        //         return Conflict($"User with email {newUser.Email} already exists.");
+        //     }
+
+        //     User user = newUser.ToEntity();
+
+        //     await _context.Users.AddAsync(user);
+        //     await _context.SaveChangesAsync();
+
+        //     var readDto = user.MapUserToDto();
+
+        //     return CreatedAtRoute("GetUserById",
+        //                           new { id = user.Id },
+        //                           value: readDto);
+        // }
+
         // PUT api/<userManagement/5
         [HttpPut("{id}")]
         public async Task<IResult> Put(int id, [FromBody] UpdatedUserDto dto)
         {
-            User? existingUser = await _context.Users.FindAsync(id);
+            // User? existingUser = await _context.Users.FindAsync(id);
+            User? existingUser = await _userManager.FindByIdAsync(id.ToString());
 
             if (existingUser == null)
             {
                 return Results.NotFound($"User with id {id} was not found.");
             }
 
-            _context.Entry(existingUser)
-                .CurrentValues
-                .SetValues(dto.ToEntity(id));
+            await _userManager.UpdateAsync(dto.ToEntity());
+            // _context.Entry(existingUser)
+            //     .CurrentValues
+            //     .SetValues(dto.ToEntity(id));
 
-            await _context.SaveChangesAsync();
+            // await _context.SaveChangesAsync();
 
             return Results.NoContent();
         }
@@ -95,7 +146,7 @@ namespace SmartLunch.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IResult> Delete(int id)
         {
-            User? existingUser = await _context.Users.FindAsync(id);
+            User? existingUser = await _userManager.FindByIdAsync(id.ToString());
 
             if (existingUser == null)
             {

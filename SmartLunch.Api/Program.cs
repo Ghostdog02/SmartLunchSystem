@@ -14,8 +14,12 @@ namespace SmartLunch.Api
             var connectionString = builder.Configuration.GetConnectionString(
                 "SmartLunchConnection"
             );
+
             builder.Services.AddDbContext<SmartLunchDbContext>(options =>
-                options.UseSqlServer(connectionString)
+                options.UseSqlServer(connectionString,
+                    sql => sql.EnableRetryOnFailure()
+                ),
+                ServiceLifetime.Scoped
             );
 
             builder

@@ -6,7 +6,10 @@
 GET {{apiBaseUrl}}/api/userManagement
 
 ###
-GET {{apiBaseUrl}}/api/userManagement/1
+GET {{apiBaseUrl}}/api/userManagement/2
+
+###
+GET {{apiBaseUrl}}/api/userManagement/?ghostdog09128@gmail.com
 
 ###
 POST {{apiBaseUrl}}/api/userManagement
@@ -15,12 +18,12 @@ Content-Type: application/json
 {
     "email": "ghostdog09128@gmail.com",
     "lastLoginDate": "2023-10-01T00:00:00",
-    "fullName": "Ghost Dog",
+    "fullName": "GhostDog",
     "phoneNumber": "1234567890"
 }
 
 ###
-PUT {{apiBaseUrl}}/api/userManagement/1
+PUT {{apiBaseUrl}}/api/userManagement/7
 Content-Type: application/json
 
 {
@@ -30,5 +33,5 @@ Content-Type: application/json
 }
 
 ###
-DELETE {{apiBaseUrl}}/api/userManagement/1
+DELETE {{apiBaseUrl}}/api/userManagement/6
 

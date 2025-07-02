@@ -34,11 +34,11 @@ namespace SmartLunch.Api.Mapping
             };
         }
         
-        public static User ToEntity(this UpdatedUserDto dto, int id)
+        public static User ToEntity(this UpdatedUserDto dto)
         {
             return new User
             {
-                Id = id,
+                Id = dto.Id,
                 Email = dto.Email,
                 UserName = dto.FullName,
                 PhoneNumber = dto.PhoneNumber

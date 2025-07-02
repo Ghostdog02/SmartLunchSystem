@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -16,11 +17,13 @@ namespace SmartLunch
 
             builder.Services.AddControllersWithViews();
 
-            //builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
-            //options.SignIn.RequireConfirmedAccount = true)
-            //    .AddRoles<IdentityRole<int>>()
-            //    .AddEntityFrameworkStores<SmartLunchDbContext>()
-            //    .AddDefaultTokenProviders();
+            builder.Services.AddHttpClient("UserManagement_Api_Client", client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:5116"); // URL of Project A
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(
+                    new MediaTypeWithQualityHeaderValue("application/json"));
+            });
 
             // Add services to the container.
             builder.Services.AddAuthentication(options =>
