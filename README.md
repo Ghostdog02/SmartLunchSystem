@@ -94,7 +94,7 @@ Update appsettings.json or secrets.json with your own:
 
 ### 5.1. 🔧 Configure the API for Windows 11
 
-Update appsettings.json or secrets.json with your own (The following example uses sql-server with Windows authentication):
+Update appsettings.json or secrets.json with your own (The following example uses SQL Server with Windows authentication):
 
 ```json
 "ConnectionStrings": {
@@ -102,7 +102,7 @@ Update appsettings.json or secrets.json with your own (The following example use
   }
 ```
 ### 5.2. 🔧 Configure the API for Linux Ubuntu 24.04
-Update appsettings.json or secrets.json with your own:
+Update appsettings.json or secrets.json with your own (The following example uses SQL Server with SQL Authentication):
 
 ```json
 "ConnectionStrings": {
