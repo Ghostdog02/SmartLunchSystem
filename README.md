@@ -71,8 +71,7 @@ Follow these instructions to run the app locally:
 ### 2. 📦 Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/Ghostdog02/SmartLunchSystem.git
 ```
 
 ### 3. 🔐 Obtain OAuth 2.0 credentials from the Google API Console.
@@ -123,7 +122,7 @@ dotnet ef database update
 ```
 Ensure the correct database provider is configured (e.g., SQL Server or SQLite).
 
-### 7. ▶️ Run the Application
+### 8. ▶️ Run the Application
 
 ```bash
 dotnet run
