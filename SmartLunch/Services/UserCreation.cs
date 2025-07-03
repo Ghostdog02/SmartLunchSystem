@@ -1,10 +1,6 @@
 ﻿using System.Net;
-using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SmartLunch.Api.Dtos;
-using SmartLunch.Database;
-using SmartLunch.Database.Entities;
 
 namespace SmartLunch.Services
 {

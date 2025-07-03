@@ -2,22 +2,25 @@ using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
-//using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using SmartLunch.Database;
-using SmartLunch.Database.ExtensionClasses;
 
 namespace SmartLunch
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            // builder.Services.AddHttpsRedirection(options =>
+            // {
+            //     // the port you actually have HTTPS running on
+            //     options.HttpsPort = 5201;
+            //     options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+            // });
 
             builder.Services.AddHttpClient(
                 "UserManagement_Api_Client",
