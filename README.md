@@ -92,7 +92,7 @@ Update appsettings.json or secrets.json with your own:
 }
 ```
 
-### 5.1. 🔧 Configure the API for Windows 11
+### 5.1. 🔧 Configure the Connection String for the database for Windows 11
 
 Update appsettings.json or secrets.json with your own (The following example uses SQL Server with Windows authentication):
 
@@ -101,7 +101,7 @@ Update appsettings.json or secrets.json with your own (The following example use
     "SmartLunchContextConnection": "Server=localhost;Database=SmartLunchSystem;Trusted_Connection=True;MultipleActiveResultSets=true;Integrated Security=true"
   }
 ```
-### 5.2. 🔧 Configure the API for Linux Ubuntu 24.04
+### 5.2. 🔧 Configure the Connection String for the database for Linux Ubuntu 24.04
 Update appsettings.json or secrets.json with your own (The following example uses SQL Server with SQL Authentication):
 
 ```json
@@ -110,7 +110,13 @@ Update appsettings.json or secrets.json with your own (The following example use
   }
 ```
 
-### 6. 🛠 Run Migrations
+### 6. 🛠 Add Migrations
+```bash
+dotnet ef migrations add "InitialCreate"
+```
+
+
+### 7. 🛠 Run Migrations
 
 ```bash
 dotnet ef database update
@@ -124,8 +130,8 @@ dotnet run
 ```
 
 🔐 Roles & Permissions
-You can assign roles to users via the database or admin panel (if included). Examples:
+You can assign roles to users via the Controller API. Examples:
 
 Admin – Full access to all controllers and actions
-
-User – Limited access based on permissions
+SuperUser - Access to most controllers
+NormalUser – Limited access based on permissions
