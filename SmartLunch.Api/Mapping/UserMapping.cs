@@ -1,6 +1,6 @@
-﻿using SmartLunch.Api.Dtos;
+﻿using System.Collections.Generic;
+using SmartLunch.Api.Dtos;
 using SmartLunch.Database;
-using System.Collections.Generic;
 
 namespace SmartLunch.Api.Mapping
 {
@@ -8,17 +8,18 @@ namespace SmartLunch.Api.Mapping
     {
         public static UserDetailsDto MapUserToDto(this User user)
         {
-            UserDetailsDto dto = new(user.Id,
-                                            user.Email!,
-                                            user.LastLoginDate,
-                                            user.UserName!);
+            UserDetailsDto dto = new(
+                user.Id,
+                user.Email!,
+                user.LastLoginDate,
+                user.UserName!,
+                user.RegistrationDate
+            );
 
             return dto;
-
         }
 
-        public static IQueryable<UserDetailsDto> MapUsersToDtos(
-           this IQueryable<User> users)
+        public static IQueryable<UserDetailsDto> MapUsersToDtos(this IQueryable<User> users)
         {
             return users.Select(user => user.MapUserToDto());
         }
@@ -28,20 +29,26 @@ namespace SmartLunch.Api.Mapping
             return new User
             {
                 Email = dto.Email,
-                LastLoginDate = dto.LastLoginDate,
                 UserName = dto.FullName,
-                PhoneNumber = dto.PhoneNumber
+                SecurityStamp = dto.SecurityStamp,
+                ConcurrencyStamp = dto.ConcurrencyStamp,
+                PhoneNumber = dto.PhoneNumber,
+                PhoneNumberConfirmed = dto.PhoneNumber != null || dto.PhoneNumber != string.Empty,
+                RegistrationDate = dto.RegistrationDate,
             };
         }
-        
-        public static User ToEntity(this UpdatedUserDto dto)
+
+        public static User ToEntity(this UpdatedUserDto dto, int id)
         {
             return new User
             {
-                Id = dto.Id,
+                Id = id,
                 Email = dto.Email,
                 UserName = dto.FullName,
-                PhoneNumber = dto.PhoneNumber
+                SecurityStamp = dto.SecurityStamp,
+                ConcurrencyStamp = dto.ConcurrencyStamp,
+                PhoneNumber = dto.PhoneNumber,
+                PhoneNumberConfirmed = dto.PhoneNumber != null || dto.PhoneNumber != string.Empty,
             };
         }
     }

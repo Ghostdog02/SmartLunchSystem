@@ -1,4 +1,5 @@
-﻿using Google.Apis.Auth.AspNetCore3;
+﻿using System.Security.Claims;
+using Google.Apis.Auth.AspNetCore3;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -7,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using SmartLunch.Api.Dtos;
 using SmartLunch.Api.Mapping;
 using SmartLunch.Services;
-using System.Security.Claims;
 
 namespace SmartLunch.Controllers
 {
@@ -31,7 +31,7 @@ namespace SmartLunch.Controllers
             var props = new AuthenticationProperties
             {
                 // After sign‐out, redirect back home (or wherever you like)
-                RedirectUri = Url.Action("Index", "Home")
+                RedirectUri = Url.Action("Index", "Home"),
             };
 
             return SignOut(
@@ -40,20 +40,22 @@ namespace SmartLunch.Controllers
                 GoogleOpenIdConnectDefaults.AuthenticationScheme
             );
         }
+
         public async Task Login()
         {
-            await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, new AuthenticationProperties()
-            {
-                RedirectUri = Url.Action("GoogleResponse")
-            });
+            await HttpContext.ChallengeAsync(
+                GoogleDefaults.AuthenticationScheme,
+                new AuthenticationProperties() { RedirectUri = Url.Action("GoogleResponse") }
+            );
         }
 
         public async Task<IActionResult> GoogleResponse()
         {
             try
             {
-                AuthenticateResult authenticateResult = await HttpContext.
-                    AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+                AuthenticateResult authenticateResult = await HttpContext.AuthenticateAsync(
+                    GoogleDefaults.AuthenticationScheme
+                );
 
                 if (!authenticateResult.Succeeded)
                 {
@@ -62,47 +64,49 @@ namespace SmartLunch.Controllers
 
                 if (authenticateResult.Principal == null)
                 {
-                    throw new InvalidOperationException("No principal found in the authentication result.");
+                    throw new InvalidOperationException(
+                        "No principal found in the authentication result."
+                    );
                 }
 
                 var claims = GetClaims(authenticateResult);
-                ClaimsDto claimsDto = claims.ToClaimsDto()
-                   ?? throw new InvalidOperationException("No valid claims found in the principal.");
+                ClaimsDto claimsDto =
+                    claims.ToClaimsDto()
+                    ?? throw new InvalidOperationException(
+                        "No valid claims found in the principal."
+                    );
 
                 await CreateUser(claimsDto);
-
-                
 
                 return RedirectToAction("Index", "Home");
                 //return Json(claimDto);
             }
-
             catch (InvalidOperationException ex)
             {
                 throw new Exception("An invalid operation occurred during authentication.", ex);
             }
-
             catch (Exception ex)
             {
                 throw new Exception("An unexpected error occurred during authentication.", ex);
             }
-            
         }
 
         private async Task CreateUser(ClaimsDto claimsDto)
         {
-            var dto = claimsDto.ToUserCreationDto()
-                ?? throw new InvalidOperationException("Failed to convert claims to UserCreationDto.");
+            var dto =
+                claimsDto.ToUserCreationDto()
+                ?? throw new InvalidOperationException(
+                    "Failed to convert claims to UserCreationDto."
+                );
 
-            
             // var userCreation = new UserCreation(serviceProvider);
             // await userCreation.CreateUserIfNotExistingAsync(claimsDto);
         }
 
         public IEnumerable<Claim> GetClaims(AuthenticateResult authenticateResult)
         {
-            ClaimsIdentity identity = authenticateResult.Principal!.Identities.
-                FirstOrDefault(i => i.Claims.Any())
+            ClaimsIdentity identity =
+                authenticateResult.Principal!.Identities.FirstOrDefault(i => i.Claims.Any())
                 ?? throw new ArgumentException("No valid claims found in the principal.");
 
             return identity.Claims;

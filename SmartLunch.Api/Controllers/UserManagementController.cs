@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SmartLunch.Api.Dtos;
 using SmartLunch.Api.Mapping;
+using SmartLunch.Api.Services;
 using SmartLunch.Database;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,21 +14,17 @@ namespace SmartLunch.Api.Controllers
     [Route("api/userManagement")]
     [ApiController]
     //[Authorize(Roles = "Admin")]
-    public class UserManagementController : ControllerBase
+    public class UserManagementController(
+        SmartLunchDbContext context,
+        UserManager<User> userManager
+    ) : ControllerBase
     {
-        private readonly SmartLunchDbContext _context;
-        private readonly  UserManager<User> _userManager;
-
-        public UserManagementController(SmartLunchDbContext context,
-                                        UserManager<User> userManager)
-        {
-            _context = context;
-            _userManager = userManager;
-        }
+        private readonly SmartLunchDbContext _context = context;
+        private readonly UserManager<User> _userManager = userManager;
 
         // GET: api/userManagement
         [HttpGet]
-        public async Task<ActionResult<List<User>>> GetAsync()
+        public async Task<ActionResult<List<UserDetailsDto>>> GetAsync()
         {
             var users = await _context.Users.MapUsersToDtos().ToListAsync();
 
@@ -71,8 +68,6 @@ namespace SmartLunch.Api.Controllers
             return Ok(dto);
         }
 
-
-
         // POST api/userManagement
         [HttpPost]
         public async Task<ActionResult> PostAsync([FromBody] UserCreationDto newUser)
@@ -90,13 +85,11 @@ namespace SmartLunch.Api.Controllers
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
 
-            // await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             var readDto = user.MapUserToDto();
 
-            return CreatedAtRoute("GetUserById",
-                                  new { id = user.Id },
-                                  value: readDto);
+            return CreatedAtRoute("GetUserByEmail", new { email = readDto.Email }, value: readDto);
         }
 
         // // POST api/userManagement
@@ -132,12 +125,15 @@ namespace SmartLunch.Api.Controllers
                 return Results.NotFound($"User with id {id} was not found.");
             }
 
-            await _userManager.UpdateAsync(dto.ToEntity());
+            existingUser.UpdateUserCredentials(dto, _userManager);
+
+            // await _userManager.UpdateAsync(dto.ToEntity(id));
+            await _userManager.UpdateAsync(existingUser);
             // _context.Entry(existingUser)
             //     .CurrentValues
             //     .SetValues(dto.ToEntity(id));
 
-            // await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return Results.NoContent();
         }
@@ -153,7 +149,8 @@ namespace SmartLunch.Api.Controllers
                 return Results.NotFound($"User with id {id} was not found.");
             }
 
-            _context.Users.Remove(existingUser);
+            await _userManager.DeleteAsync(existingUser);
+            // _context.Users.Remove(existingUser);
             await _context.SaveChangesAsync();
 
             return Results.NoContent();

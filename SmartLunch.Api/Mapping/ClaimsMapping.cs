@@ -1,5 +1,5 @@
-﻿using SmartLunch.Api.Dtos;
-using System.Security.Claims;
+﻿using System.Security.Claims;
+using SmartLunch.Api.Dtos;
 
 namespace SmartLunch.Api.Mapping
 {
@@ -14,16 +14,26 @@ namespace SmartLunch.Api.Mapping
             );
         }
 
-        public static UserCreationDto ToUserCreationDto(
-            this ClaimsDto dto)
+        public static UserCreationDto ToUserCreationDto(this ClaimsDto dto)
         {
-            return new UserCreationDto
-            (0, // Id will be set later
+            // return new UserCreationDto(
+            //     0, // Id will be set later
+            //     dto.Email,
+            //     dto.FullName,
+
+            //     dto.PhoneNumber
+            // );
+            var userCreationDto = new UserCreationDto(
+                0, // Id will be set later
                 dto.Email,
-                DateTime.UtcNow, // LastLoginDate set to current time
                 dto.FullName,
-                dto.PhoneNumber
+                Guid.NewGuid().ToString(), // SecurityStamp
+                Guid.NewGuid().ToString(), // ConcurrencyStamp
+                dto.PhoneNumber,
+                DateTime.Now
             );
+
+            return userCreationDto;
         }
     }
 }

@@ -6,32 +6,36 @@
 GET {{apiBaseUrl}}/api/userManagement
 
 ###
-GET {{apiBaseUrl}}/api/userManagement/2
+GET {{apiBaseUrl}}/api/userManagement/4
 
 ###
-GET {{apiBaseUrl}}/api/userManagement/?ghostdog09128@gmail.com
+GET {{apiBaseUrl}}/api/userManagement/@gmail.com.bg
 
 ###
 POST {{apiBaseUrl}}/api/userManagement
 Content-Type: application/json
 
 {
-    "email": "ghostdog09128@gmail.com",
-    "lastLoginDate": "2023-10-01T00:00:00",
-    "fullName": "GhostDog",
-    "phoneNumber": "1234567890"
+    "email": "@gmail.com.bg",
+    "fullName": "GET",
+    "securityStamp": "sadfadsfasfasdfa",
+    "concurrencyStamp": "fadsfasfasfasdfa",
+    "phoneNumber": "1234567890",
+    "registrationDate": "2023-01-01T00:00:00Z"
 }
 
 ###
-PUT {{apiBaseUrl}}/api/userManagement/7
+PUT {{apiBaseUrl}}/api/userManagement/4
 Content-Type: application/json
 
 {
-    "email": "@gmail.com",
+    "email": "@.com",
     "fullName": "Dog",
+    "securityStamp": "sadfads3424242fasfasdfa",
+    "concurrencyStamp": "fadsf42342asfasfasdfa",
     "phoneNumber": "990900932"
 }
 
 ###
-DELETE {{apiBaseUrl}}/api/userManagement/6
+DELETE {{apiBaseUrl}}/api/userManagement/4
 
