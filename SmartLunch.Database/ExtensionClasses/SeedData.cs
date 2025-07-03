@@ -1,45 +1,55 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using SmartLunch.Database.Entities;
 
-namespace SmartLunch.Database
+namespace SmartLunch.Database.ExtensionClasses
 {
     public class SeedData
     {
-        public async Task InitializeAsync(IServiceProvider serviceProvider)
+        private readonly IServiceProvider _serviceProvider;
+        private readonly SmartLunchDbContext _context;
+        private readonly UserManager<User> _userManager;
+
+        public SeedData(IServiceProvider serviceProvider)
+        {
+            _serviceProvider =
+                serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+
+            using var scope = _serviceProvider.CreateScope();
+            _context = scope.ServiceProvider.GetRequiredService<SmartLunchDbContext>();
+            _userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+        }
+
+        public async Task InitializeAsync()
         {
             try
             {
-                using var scope = serviceProvider.CreateScope();
-                var context = scope.ServiceProvider.GetRequiredService<SmartLunchDbContext>();
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
-
-                await SeedRolesAsync(context);
-                await SeedAdminUserAsync(context, userManager);
+                await SeedRolesAsync(_context);
+                await SeedAdminUserAsync(_context, _userManager);
             }
-
             catch (DbUpdateException ex)
             {
                 throw new Exception("A database error occurred while saving data.", ex);
             }
-
             catch (InvalidOperationException ex)
             {
                 throw new Exception("An invalid operation occurred during user processing.", ex);
             }
-
             catch (ArgumentNullException ex)
             {
                 throw new Exception("A null parameter has been passed during seeding roles", ex);
             }
-
             catch (Exception ex)
             {
                 throw new Exception("An unexpected error occurred during user initialization.", ex);
             }
         }
 
-        private async Task SeedAdminUserAsync(SmartLunchDbContext context, UserManager<User> userManager)
+        private async Task SeedAdminUserAsync(
+            SmartLunchDbContext context,
+            UserManager<User> userManager
+        )
         {
             var adminEmail = "alex.vesely07@gmail.com";
             if (userManager.FindByEmailAsync(adminEmail) != null)
@@ -47,7 +57,7 @@ namespace SmartLunch.Database
                 return;
             }
 
-            var today = DateTime.Now;
+            var today = DateTime.Today;
 
             var user = new User
             {
@@ -56,7 +66,7 @@ namespace SmartLunch.Database
                 EmailConfirmed = true,
                 LockoutEnabled = false,
                 LastLoginDate = today,
-                RegistrationDate = today
+                RegistrationDate = today,
             };
 
             var creationResult = await userManager.CreateAsync(user);
@@ -74,19 +84,18 @@ namespace SmartLunch.Database
 
         private static async Task SeedRolesAsync(SmartLunchDbContext context)
         {
-
-            string[] roles = ["Admin", "Parent", "Cook"];
+            string[] roles = ["Admin", "NormalUser", "SuperUser"];
 
             foreach (string role in roles)
             {
                 var roleStore = new CustomRoleStore(context);
 
-                if (!context.Roles.Any(r => r.Name == role))
+                if (await context.Roles.FindAsync(role) == null)
                 {
                     var identityRole = new IdentityRole<int>(role)
                     {
                         NormalizedName = role.ToUpperInvariant(),
-                        ConcurrencyStamp = Guid.NewGuid().ToString("D")
+                        ConcurrencyStamp = Guid.NewGuid().ToString("D"),
                     };
 
                     await roleStore.CreateAsync(identityRole);
@@ -103,8 +112,7 @@ namespace SmartLunch.Database
         {
             if (!result.Succeeded)
             {
-                string errorMessages = string.Join(", ", result.Errors.
-                    Select(e => e.Description));
+                string errorMessages = string.Join(", ", result.Errors.Select(e => e.Description));
 
                 throw new Exception($"{description}: {string.Join(", ", result.Errors)}");
             }

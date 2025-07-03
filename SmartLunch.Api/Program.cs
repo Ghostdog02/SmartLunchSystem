@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using SmartLunch.Database;
+using SmartLunch.Database.Entities;
+using SmartLunch.Database.ExtensionClasses;
 
 namespace SmartLunch.Api
 {
@@ -81,7 +83,10 @@ namespace SmartLunch.Api
 
             app.MapControllers();
 
+            var seeder = new SeedData(app.Services);
+
             await app.Services.MigrateDbAsync();
+            await seeder.InitializeAsync();
 
             app.Run();
         }

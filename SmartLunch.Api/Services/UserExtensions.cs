@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using SmartLunch.Api.Dtos;
-using SmartLunch.Database;
+using SmartLunch.Database.Entities;
 
 namespace SmartLunch.Api.Services
 {

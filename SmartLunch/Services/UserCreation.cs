@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SmartLunch.Api.Dtos;
 using SmartLunch.Database;
+using SmartLunch.Database.Entities;
 
 namespace SmartLunch.Services
 {
@@ -42,31 +43,12 @@ namespace SmartLunch.Services
 
                 if (!getResponse.IsSuccessStatusCode)
                 {
-                    var userData = new UserCreationDto(
-                        0,
-                        email,
-                        claimsDto.FullName,
-                        Guid.NewGuid().ToString(),
-                        Guid.NewGuid().ToString(),
-                        claimsDto.PhoneNumber,
-                        DateTime.Today
-                    );
-
-                    var postResponse = await client.PostAsJsonAsync(
-                        $"api/userManagement",
-                        userData
-                    );
-
-                    if (!postResponse.IsSuccessStatusCode)
+                    if (getResponse.StatusCode != HttpStatusCode.NotFound)
                     {
-                        throw postResponse.StatusCode switch
+                        throw getResponse.StatusCode switch
                         {
                             HttpStatusCode.BadRequest => new ArgumentException(
-                                "Invalid user data provided"
-                            ),
-
-                            HttpStatusCode.Conflict => new InvalidOperationException(
-                                "User already exists"
+                                "Invalid email format"
                             ),
 
                             HttpStatusCode.Unauthorized => new UnauthorizedAccessException(
@@ -74,9 +56,48 @@ namespace SmartLunch.Services
                             ),
 
                             _ => new HttpRequestException(
-                                $"Request failed: {postResponse.StatusCode}"
+                                $"Request failed: {getResponse.StatusCode}"
                             ),
                         };
+                    }
+                    else
+                    {
+                        var userData = new UserCreationDto(
+                            0,
+                            email,
+                            claimsDto.FullName,
+                            Guid.NewGuid().ToString(),
+                            Guid.NewGuid().ToString(),
+                            claimsDto.PhoneNumber,
+                            DateTime.Today
+                        );
+
+                        var postResponse = await client.PostAsJsonAsync(
+                            $"api/userManagement",
+                            userData
+                        );
+
+                        if (!postResponse.IsSuccessStatusCode)
+                        {
+                            throw postResponse.StatusCode switch
+                            {
+                                HttpStatusCode.BadRequest => new ArgumentException(
+                                    "Invalid user data provided"
+                                ),
+
+                                HttpStatusCode.Conflict => new InvalidOperationException(
+                                    "User already exists"
+                                ),
+
+                                HttpStatusCode.Unauthorized => new UnauthorizedAccessException(
+                                    "Authentication required"
+                                ),
+
+                                _ => new HttpRequestException(
+                                    $"Request failed: {postResponse.StatusCode}"
+                                ),
+                            };
+                        }
                     }
                 }
                 else
@@ -88,9 +109,9 @@ namespace SmartLunch.Services
                         );
 
                     await AddRoleToUser(userManager, user);
-                }
 
-                UpdateLoginDate(user);
+                    UpdateLoginDate(user);
+                }
 
                 await context.SaveChangesAsync();
             }

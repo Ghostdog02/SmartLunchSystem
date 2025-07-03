@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace SmartLunch.Database
+namespace SmartLunch.Database.Entities
 {
     public class User : IdentityUser<int>
     {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,6 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using SmartLunch.Controllers;
-using System.Security.Claims;
 
 namespace SmartLunch.Tests
 {
@@ -20,16 +20,19 @@ namespace SmartLunch.Tests
             var stubServiceProvider = new Mock<IServiceProvider>();
             AccountController controller = new AccountController(stubServiceProvider.Object);
 
-            var identity = new ClaimsIdentity(new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, "Test User"),
-                new Claim(ClaimTypes.Email, "test@example.com"),
-                new Claim(ClaimTypes.Role, "Admin")
-            });
+            var identity = new ClaimsIdentity(
+                new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, "Test User"),
+                    new Claim(ClaimTypes.Email, "test@example.com"),
+                    new Claim(ClaimTypes.Role, "Admin"),
+                }
+            );
 
             var principal = new ClaimsPrincipal(identity);
             var authenticateResult = AuthenticateResult.Success(
-                new AuthenticationTicket(principal, GoogleDefaults.AuthenticationScheme));
+                new AuthenticationTicket(principal, GoogleDefaults.AuthenticationScheme)
+            );
 
             //Act
             IEnumerable<Claim> claims = controller.GetClaims(authenticateResult);
@@ -64,7 +67,8 @@ namespace SmartLunch.Tests
 
             var principal = new ClaimsPrincipal(identity);
             var authenticateResult = AuthenticateResult.Success(
-                new AuthenticationTicket(principal, GoogleDefaults.AuthenticationScheme));
+                new AuthenticationTicket(principal, GoogleDefaults.AuthenticationScheme)
+            );
 
             //Act and Assert
             Assert.Throws<ArgumentException>(() => controller.GetClaims(authenticateResult));
@@ -78,41 +82,45 @@ namespace SmartLunch.Tests
             var urlHelperFactoryStub = new Mock<IUrlHelperFactory>();
             var urlHelperMock = new Mock<IUrlHelper>();
 
-            urlHelperMock.Setup(url => url.Action(It.IsAny<UrlActionContext>()))
+            urlHelperMock
+                .Setup(url => url.Action(It.IsAny<UrlActionContext>()))
                 .Returns("/Account/GoogleResponse");
 
-            urlHelperFactoryStub.Setup(factory => factory.GetUrlHelper(It.IsAny<ActionContext>()))
+            urlHelperFactoryStub
+                .Setup(factory => factory.GetUrlHelper(It.IsAny<ActionContext>()))
                 .Returns(urlHelperMock.Object);
 
             var serviceCollection = new ServiceCollection();
-            serviceCollection.AddSingleton<IAuthenticationService>(authenticationServiceMock.Object);
+            serviceCollection.AddSingleton<IAuthenticationService>(
+                authenticationServiceMock.Object
+            );
             serviceCollection.AddSingleton<IUrlHelperFactory>(urlHelperFactoryStub.Object);
             serviceCollection.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
             ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
-            var httpContext = new DefaultHttpContext
-            {
-                RequestServices = serviceProvider
-            };
+            var httpContext = new DefaultHttpContext { RequestServices = serviceProvider };
 
             var controller = new AccountController(serviceProvider)
             {
-                ControllerContext = new ControllerContext
-                {
-                    HttpContext = httpContext
-                }
+                ControllerContext = new ControllerContext { HttpContext = httpContext },
             };
 
             // Act
             await controller.Login();
 
             // Assert
-            authenticationServiceMock.Verify(auth => auth.ChallengeAsync(It.IsAny<HttpContext>(),
-                GoogleDefaults.AuthenticationScheme,
-                It.Is<AuthenticationProperties>(props =>
-                props.RedirectUri == "/Account/GoogleResponse")),
-                Times.Once);
+            authenticationServiceMock.Verify(
+                auth =>
+                    auth.ChallengeAsync(
+                        It.IsAny<HttpContext>(),
+                        GoogleDefaults.AuthenticationScheme,
+                        It.Is<AuthenticationProperties>(props =>
+                            props.RedirectUri == "/Account/GoogleResponse"
+                        )
+                    ),
+                Times.Once
+            );
         }
     }
 }

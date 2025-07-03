@@ -15,33 +15,42 @@ namespace SmartLunch
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddHttpClient("UserManagement_Api_Client", client =>
-            {
-                client.BaseAddress = new Uri("http://localhost:5116"); // URL of Project A
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(
-                    new MediaTypeWithQualityHeaderValue("application/json"));
-            });
+            builder.Services.AddHttpClient(
+                "UserManagement_Api_Client",
+                client =>
+                {
+                    client.BaseAddress = new Uri("http://localhost:5116");
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(
+                        new MediaTypeWithQualityHeaderValue("application/json")
+                    );
+                }
+            );
 
-            // Add services to the container.
-            builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-            })
-            .AddCookie()
-            .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
-            {
-                options.ClientId = builder.Configuration["Authentication:Google:ClientId"]!;
-                options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
-                options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
-                options.Scope.Add("profile");
-                options.Scope.Add("email");
-                //options.CallbackPath = "/signin-google";
-
-            });
+            builder
+                .Services.AddAuthentication(options =>
+                {
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                })
+                .AddCookie()
+                .AddGoogle(
+                    GoogleDefaults.AuthenticationScheme,
+                    options =>
+                    {
+                        options.ClientId = builder.Configuration["Authentication:Google:ClientId"]!;
+                        options.ClientSecret = builder.Configuration[
+                            "Authentication:Google:ClientSecret"
+                        ]!;
+                        options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
+                        options.Scope.Add("profile");
+                        options.Scope.Add("email");
+                        //options.CallbackPath = "/signin-google";
+                    }
+                );
 
             builder.Services.Configure<IdentityOptions>(options =>
             {
@@ -71,7 +80,8 @@ namespace SmartLunch
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}"
+            );
 
             var seeder = new SeedData();
             await seeder.InitializeAsync(app.Services);

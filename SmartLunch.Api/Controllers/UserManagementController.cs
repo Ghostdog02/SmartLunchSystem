@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SmartLunch.Api.Dtos;
 using SmartLunch.Api.Mapping;
 using SmartLunch.Api.Services;
 using SmartLunch.Database;
+using SmartLunch.Database.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -56,7 +56,7 @@ namespace SmartLunch.Api.Controllers
         [HttpGet("{email}", Name = "GetUserByEmail")]
         public async Task<ActionResult<UserDetailsDto>> GetAsync(string email)
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            User user = await _userManager.FindByEmailAsync(email);
 
             if (user == null)
             {
@@ -92,26 +92,26 @@ namespace SmartLunch.Api.Controllers
             return CreatedAtRoute("GetUserByEmail", new { email = readDto.Email }, value: readDto);
         }
 
-        // // POST api/userManagement
-        // [HttpPost]
-        // public async Task<ActionResult> PostAsync([FromBody] UserCreationDto newUser)
-        // {
-        //     if (_context.Users.Any(u => u.Email == newUser.Email))
-        //     {
-        //         return Conflict($"User with email {newUser.Email} already exists.");
-        //     }
+        // POST api/userManagement/assignRole
+        [HttpPost("assignRole")]
+        public async Task<ActionResult> AssignRoleAsync([FromBody] UserRoleDto userRoleDto)
+        {
+            User user = await _userManager.FindByIdAsync(userRoleDto.UserId.ToString());
 
-        //     User user = newUser.ToEntity();
+            if (user == null)
+            {
+                return NotFound($"User with ID {userRoleDto.UserId} not found.");
+            }
 
-        //     await _context.Users.AddAsync(user);
-        //     await _context.SaveChangesAsync();
+            var result = await _userManager.AddToRoleAsync(user, userRoleDto.RoleName);
 
-        //     var readDto = user.MapUserToDto();
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
 
-        //     return CreatedAtRoute("GetUserById",
-        //                           new { id = user.Id },
-        //                           value: readDto);
-        // }
+            return NoContent();
+        }
 
         // PUT api/<userManagement/5
         [HttpPut("{id}")]

@@ -25,6 +25,15 @@ Content-Type: application/json
 }
 
 ###
+POST {{apiBaseUrl}}/api/userManagement/assignRole
+Content-Type: application/json
+
+{
+    "userId": 5,
+    "roleName": "Admin"
+}
+
+###
 PUT {{apiBaseUrl}}/api/userManagement/4
 Content-Type: application/json
 
