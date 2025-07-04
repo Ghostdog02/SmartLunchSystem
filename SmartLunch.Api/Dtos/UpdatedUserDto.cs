@@ -5,6 +5,7 @@ namespace SmartLunch.Api.Dtos
         string FullName,
         string SecurityStamp,
         string ConcurrencyStamp,
-        string PhoneNumber
+        string PhoneNumber,
+        DateTime LastLoginDate
     );
 }

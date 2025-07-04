@@ -5,10 +5,11 @@
     {
         <li>
             <a>Hello @User.Identity.Name</a>
-            <a>Authenticated? @User.Identity.IsAuthenticated</a>
         </li>
         <li>
-            @* <a asp-controller="Account" asp-action="Logout">Logout from Google</a> *@
+            <form asp-controller="Account" asp-action="Logout" method="post">
+                <button type="submit" class="btn btn-link">Logout from Google</button>
+            </form>
         </li>
     }
 

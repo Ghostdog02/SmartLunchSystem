@@ -26,5 +26,10 @@ namespace SmartLunch.Api.Services
 
             return user;
         }
+
+        public static void UpdateLastLoginDate(this User user)
+        {
+            user.LastLoginDate = DateTime.Now;
+        }
     }
 }

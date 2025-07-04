@@ -103,6 +103,11 @@ namespace SmartLunch.Api.Controllers
                 return NotFound($"User with ID {userRoleDto.UserId} not found.");
             }
 
+            if (await _userManager.GetRolesAsync(user) != null)
+            {
+                return NoContent();
+            }
+
             var result = await _userManager.AddToRoleAsync(user, userRoleDto.RoleName);
 
             if (!result.Succeeded)
@@ -113,7 +118,7 @@ namespace SmartLunch.Api.Controllers
             return NoContent();
         }
 
-        // PUT api/<userManagement/5
+        // PUT api/userManagement/5
         [HttpPut("{id}")]
         public async Task<IResult> Put(int id, [FromBody] UpdatedUserDto dto)
         {
@@ -126,6 +131,31 @@ namespace SmartLunch.Api.Controllers
             }
 
             existingUser.UpdateUserCredentials(dto, _userManager);
+
+            // await _userManager.UpdateAsync(dto.ToEntity(id));
+            await _userManager.UpdateAsync(existingUser);
+            // _context.Entry(existingUser)
+            //     .CurrentValues
+            //     .SetValues(dto.ToEntity(id));
+
+            await _context.SaveChangesAsync();
+
+            return Results.NoContent();
+        }
+
+        // PUT api/userManagement/5/updateLoginDate
+        [HttpPut("{id}/updateLoginDate", Name = "UpdateLastLoginDate")]
+        public async Task<IResult> UpdateLastLoginDate(int id, [FromBody] UserDetailsDto detailsDto)
+        {
+            // User? existingUser = await _context.Users.FindAsync(id);
+            User? existingUser = await _userManager.FindByIdAsync(id.ToString());
+
+            if (existingUser == null)
+            {
+                return Results.NotFound($"User with id {id} was not found.");
+            }
+
+            existingUser.UpdateLastLoginDate();
 
             // await _userManager.UpdateAsync(dto.ToEntity(id));
             await _userManager.UpdateAsync(existingUser);

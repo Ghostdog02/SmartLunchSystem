@@ -11,39 +11,25 @@ using SmartLunch.Services;
 
 namespace SmartLunch.Controllers
 {
-    [AllowAnonymous]
-    public class AccountController : Controller
-    {
-        private readonly IServiceProvider _serviceProvider;
-        private readonly IHttpClientFactory _httpClientFactory;
 
-        public AccountController(IServiceProvider serviceProvider,
-                                 IHttpClientFactory httpClientFactory)
-        {
-            _serviceProvider = serviceProvider;
-            _httpClientFactory = httpClientFactory;
-        }
+    public class AccountController(IServiceProvider serviceProvider,
+                             IHttpClientFactory httpClientFactory) : Controller
+    {
+        private readonly IServiceProvider _serviceProvider = serviceProvider;
+        private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Logout()
+        [Authorize]
+        public async Task<IActionResult> Logout()
         {
-            // This will:
-            //  1) clear your local auth cookie
-            //  2) send a sign‐out message to Google OIDC middleware
-            var props = new AuthenticationProperties
-            {
-                // After sign‐out, redirect back home (or wherever you like)
-                RedirectUri = Url.Action("Index", "Home"),
-            };
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            return SignOut(
-                props,
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                GoogleOpenIdConnectDefaults.AuthenticationScheme
-            );
+            string redirectUri = Url.Action("Index", "Home");
+            return Redirect(redirectUri);
         }
 
+        [AllowAnonymous]
         public async Task Login()
         {
             await HttpContext.ChallengeAsync(
@@ -52,6 +38,7 @@ namespace SmartLunch.Controllers
             );
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> GoogleResponse()
         {
             try
@@ -84,10 +71,12 @@ namespace SmartLunch.Controllers
                 return RedirectToAction("Index", "Home");
                 //return Json(claimDto);
             }
+
             catch (InvalidOperationException ex)
             {
                 throw new Exception("An invalid operation occurred during authentication.", ex);
             }
+
             catch (Exception ex)
             {
                 throw new Exception("An unexpected error occurred during authentication.", ex);
@@ -96,9 +85,7 @@ namespace SmartLunch.Controllers
 
         private async Task CreateUser(ClaimsDto claimsDto)
         {
-            HttpClient client = _serviceProvider.GetRequiredService<HttpClient>();
-
-
+            // HttpClient client = _serviceProvider.GetRequiredService<HttpClient>();
 
             var dto =
                 claimsDto.ToUserCreationDto()
@@ -107,7 +94,7 @@ namespace SmartLunch.Controllers
                 );
 
             var userCreation = new UserCreation(_serviceProvider, _httpClientFactory);
-            await userCreation.CreateUserIfNotExistingAsync(claimsDto);
+            await userCreation.CreateUserIfNotExistingAsync(dto);
         }
 
         public IEnumerable<Claim> GetClaims(AuthenticateResult authenticateResult)

@@ -15,13 +15,6 @@ namespace SmartLunch
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            // builder.Services.AddHttpsRedirection(options =>
-            // {
-            //     // the port you actually have HTTPS running on
-            //     options.HttpsPort = 5201;
-            //     options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
-            // });
-
             builder.Services.AddHttpClient(
                 "UserManagementAPI",
                 client =>
