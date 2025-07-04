@@ -56,7 +56,7 @@ namespace SmartLunch.Api.Controllers
         [HttpGet("{email}", Name = "GetUserByEmail")]
         public async Task<ActionResult<UserDetailsDto>> GetAsync(string email)
         {
-            User user = await _userManager.FindByEmailAsync(email);
+            User? user = await _userManager.FindByEmailAsync(email);
 
             if (user == null)
             {
@@ -96,7 +96,7 @@ namespace SmartLunch.Api.Controllers
         [HttpPost("assignRole")]
         public async Task<ActionResult> AssignRoleAsync([FromBody] UserRoleDto userRoleDto)
         {
-            User user = await _userManager.FindByIdAsync(userRoleDto.UserId.ToString());
+            User? user = await _userManager.FindByIdAsync(userRoleDto.UserId.ToString());
 
             if (user == null)
             {

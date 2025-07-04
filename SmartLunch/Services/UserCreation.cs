@@ -19,7 +19,7 @@ namespace SmartLunch.Services
             {
                 using var scope = ServiceProvider.CreateScope();
 
-                var client = HttpClientFactory.CreateClient("UserManagement_Api_Client");
+                var httpClient = HttpClientFactory.CreateClient("UserManagementAPI");
 
                 string email = claimsDto.Email!;
 
@@ -28,7 +28,7 @@ namespace SmartLunch.Services
                     throw new ArgumentException("Email cannot be null or empty", nameof(email));
                 }
 
-                var getResponse = await client.GetAsync($"api/userManagement/{email}");
+                var getResponse = await httpClient.GetAsync($"api/userManagement/{email}");
 
                 if (!getResponse.IsSuccessStatusCode)
                 {
@@ -48,7 +48,7 @@ namespace SmartLunch.Services
                         DateTime.Today
                     );
 
-                    var postResponse = await client.PostAsJsonAsync(
+                    var postResponse = await httpClient.PostAsJsonAsync(
                         $"api/userManagement",
                         userData
                     );
@@ -68,7 +68,7 @@ namespace SmartLunch.Services
                             $"Failed to deserialize user data from response"
                         );
 
-                    var assignRoleResponse = await client.PostAsJsonAsync(
+                    var assignRoleResponse = await httpClient.PostAsJsonAsync(
                         $"api/userManagement/assignRole",
                         new UserRoleDto(dto.Id, "NormalUser")
                     );
@@ -106,7 +106,7 @@ namespace SmartLunch.Services
 
         private static void ThrowExceptionBasedOnResponse(HttpStatusCode httpStatusCode,
             string badRequestMessage,
-            UserDetailsDto dto = null) // It is used only for not found case
+            UserDetailsDto dto = null) // It is used only for httpStatus not found case
         {
             throw httpStatusCode switch
             {

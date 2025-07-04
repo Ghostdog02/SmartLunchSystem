@@ -11,8 +11,15 @@ namespace SmartLunch.Database
         {
             var optionsBuilder = new DbContextOptionsBuilder<SmartLunchDbContext>();
 
+            var basePath = Path.GetFullPath(
+                Path.Combine(Directory.GetCurrentDirectory(),
+                            "..",
+                            "SmartLunch.Api"
+                )
+            );
+
             var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
+                .SetBasePath(basePath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
 

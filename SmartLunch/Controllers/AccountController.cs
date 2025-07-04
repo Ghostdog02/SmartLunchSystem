@@ -14,11 +14,14 @@ namespace SmartLunch.Controllers
     [AllowAnonymous]
     public class AccountController : Controller
     {
-        private readonly IServiceProvider serviceProvider;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public AccountController(IServiceProvider serviceProvider)
+        public AccountController(IServiceProvider serviceProvider,
+                                 IHttpClientFactory httpClientFactory)
         {
-            this.serviceProvider = serviceProvider;
+            _serviceProvider = serviceProvider;
+            _httpClientFactory = httpClientFactory;
         }
 
         [HttpPost]
@@ -93,14 +96,18 @@ namespace SmartLunch.Controllers
 
         private async Task CreateUser(ClaimsDto claimsDto)
         {
+            HttpClient client = _serviceProvider.GetRequiredService<HttpClient>();
+
+
+
             var dto =
                 claimsDto.ToUserCreationDto()
                 ?? throw new InvalidOperationException(
                     "Failed to convert claims to UserCreationDto."
                 );
 
-            // var userCreation = new UserCreation(serviceProvider);
-            // await userCreation.CreateUserIfNotExistingAsync(claimsDto);
+            var userCreation = new UserCreation(_serviceProvider, _httpClientFactory);
+            await userCreation.CreateUserIfNotExistingAsync(claimsDto);
         }
 
         public IEnumerable<Claim> GetClaims(AuthenticateResult authenticateResult)

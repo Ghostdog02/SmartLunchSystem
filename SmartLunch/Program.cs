@@ -23,7 +23,7 @@ namespace SmartLunch
             // });
 
             builder.Services.AddHttpClient(
-                "UserManagement_Api_Client",
+                "UserManagementAPI",
                 client =>
                 {
                     client.BaseAddress = new Uri("http://localhost:5116");
@@ -56,13 +56,13 @@ namespace SmartLunch
                     }
                 );
 
-            builder.Services.Configure<IdentityOptions>(options =>
-            {
-                // Default SignIn settings.
-                options.SignIn.RequireConfirmedEmail = true;
-                options.SignIn.RequireConfirmedPhoneNumber = false;
-                options.Lockout.AllowedForNewUsers = true;
-            });
+            // builder.Services.Configure<IdentityOptions>(options =>
+            // {
+            //     // Default SignIn settings.
+            //     options.SignIn.RequireConfirmedEmail = true;
+            //     options.SignIn.RequireConfirmedPhoneNumber = false;
+            //     options.Lockout.AllowedForNewUsers = true;
+            // });
 
             var app = builder.Build();
 
@@ -72,9 +72,13 @@ namespace SmartLunch
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+                builder.Services.AddHttpsRedirection(options =>
+                {
+                    options.HttpsPort = 7235;
+                    options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+                });
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
