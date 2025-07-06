@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Identity;
+﻿using System.Text;
 using SmartLunch.Api.Dtos;
 using SmartLunch.Database.Entities;
 

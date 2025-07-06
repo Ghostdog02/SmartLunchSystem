@@ -10,23 +10,16 @@ namespace SmartLunch.Api.Mapping
             return new ClaimsDto(
                 claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value,
                 claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value,
-                claims.FirstOrDefault(c => c.Type == ClaimTypes.MobilePhone)?.Value
+                claims.FirstOrDefault(c => c.Type == ClaimTypes.MobilePhone)!.Value
             );
         }
 
         public static UserCreationDto ToUserCreationDto(this ClaimsDto dto)
         {
-            // return new UserCreationDto(
-            //     0, // Id will be set later
-            //     dto.Email,
-            //     dto.FullName,
-
-            //     dto.PhoneNumber
-            // );
             var userCreationDto = new UserCreationDto(
                 0, // Id will be set later
-                dto.Email,
-                dto.FullName,
+                dto.Email!,
+                dto.FullName!,
                 Guid.NewGuid().ToString(), // SecurityStamp
                 Guid.NewGuid().ToString(), // ConcurrencyStamp
                 dto.PhoneNumber,

@@ -102,7 +102,10 @@ namespace SmartLunch.Api.Controllers
                 return NotFound($"User with ID {userRoleDto.UserId} not found.");
             }
 
-            if (await _userManager.GetRolesAsync(user) != null)
+            var rolesCount = await _userManager.GetRolesAsync(user);
+
+
+            if (rolesCount.Count() != 0)
             {
                 return NoContent();
             }
@@ -113,6 +116,8 @@ namespace SmartLunch.Api.Controllers
             {
                 return BadRequest(result.Errors);
             }
+
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -142,9 +147,9 @@ namespace SmartLunch.Api.Controllers
             return Results.NoContent();
         }
 
-        // PUT api/userManagement/5/updateLoginDate
-        [HttpPut("{id}/updateLoginDate", Name = "UpdateLastLoginDate")]
-        public async Task<IResult> UpdateLastLoginDate(int id)
+        // PUT api/userManagement/updateLoginDate/5
+        [HttpPut("updateLoginDate/{id}", Name = "UpdateLastLoginDateAsync")]
+        public async Task<IResult> UpdateLastLoginDateAsync(int id)
         {
             // User? existingUser = await _context.Users.FindAsync(id);
             User? existingUser = await _userManager.FindByIdAsync(id.ToString());
@@ -167,9 +172,9 @@ namespace SmartLunch.Api.Controllers
             return Results.NoContent();
         }
 
-        // DELETE api/<UserManagementController>/5
+        // DELETE api/userManagementApi/5
         [HttpDelete("{id}")]
-        public async Task<IResult> Delete(int id)
+        public async Task<IResult> DeleteAsync(int id)
         {
             User? existingUser = await _userManager.FindByIdAsync(id.ToString());
 

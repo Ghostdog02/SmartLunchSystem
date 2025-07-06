@@ -40,7 +40,7 @@ namespace SmartLunch.Database.ExtensionClasses
             }
         }
 
-        private async Task SeedAdminUserAsync(
+        private static async Task SeedAdminUserAsync(
             SmartLunchDbContext context,
             UserManager<User> userManager
         )
