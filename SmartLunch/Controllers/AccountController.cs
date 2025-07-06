@@ -1,63 +1,109 @@
-﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc;
+using SmartLunch.Api.Dtos;
+using SmartLunch.Api.Mapping;
 using SmartLunch.Services;
 
 namespace SmartLunch.Controllers
 {
-    [AllowAnonymous]
-    public class AccountController : Controller
+    public class AccountController(
+        IServiceProvider serviceProvider,
+        IHttpClientFactory httpClientFactory
+    ) : Controller
     {
-        public IActionResult Login()
+        private readonly IServiceProvider _serviceProvider = serviceProvider;
+        private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> Logout()
         {
-            return View();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            string redirectUri = Url.Action("Index", "Home")!;
+            return Redirect(redirectUri);
         }
 
-        [HttpGet]
-        public IActionResult ExternalLogin(string provider = "Google")
+        [AllowAnonymous]
+        public async Task Login()
         {
-            // Prepare the authentication properties
-            var redirectUrl = Url.Action("ExternalLoginCallback", "Account");
-
-            var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
-
-            // Challenge the specified authentication scheme
-            return Challenge(properties, OpenIdConnectDefaults.AuthenticationScheme);
+            await HttpContext.ChallengeAsync(
+                GoogleDefaults.AuthenticationScheme,
+                new AuthenticationProperties() { RedirectUri = Url.Action("GoogleResponse") }
+            );
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ExternalLoginCallback()
+        [AllowAnonymous]
+        public async Task<IActionResult> GoogleResponse()
         {
-            // Get the external login info
-            var authenticateResult = await HttpContext.AuthenticateAsync(OpenIdConnectDefaults.
-                AuthenticationScheme);
-
-            if (authenticateResult?.Succeeded != true)
+            try
             {
-                return RedirectToAction("LoginFailed");
+                AuthenticateResult authenticateResult = await HttpContext.AuthenticateAsync(
+                    GoogleDefaults.AuthenticationScheme
+                );
+
+                if (!authenticateResult.Succeeded)
+                {
+                    throw new InvalidOperationException("Authentication failed.");
+                }
+
+                if (authenticateResult.Principal == null)
+                {
+                    throw new InvalidOperationException(
+                        "No principal found in the authentication result."
+                    );
+                }
+
+                var claims = GetClaims(authenticateResult);
+                ClaimsDto claimsDto =
+                    claims.ToClaimsDto()
+                    ?? throw new InvalidOperationException(
+                        "No valid claims found in the principal."
+                    );
+
+                await CreateUser(claimsDto);
+
+                return RedirectToAction("Index", "Home");
+                //return Json(claimDto);
             }
 
-            // Extract user claims
-            var claims = authenticateResult.Principal.Claims;
+            catch (InvalidOperationException ex)
+            {
+                throw new Exception("An invalid operation occurred during authentication.", ex);
+            }
 
-            var usersCreation = new UsersCreation(HttpContext.RequestServices);
-            await usersCreation.CreateUserIfNotExistingAsync(claims);
-
-            return RedirectToAction("Index", "Home");
+            catch (Exception ex)
+            {
+                throw new Exception("An unexpected error occurred during authentication.", ex);
+            }
         }
 
-        public IActionResult LoginFailed()
+        private async Task CreateUser(ClaimsDto claimsDto)
         {
-            return View();
+            // HttpClient client = _serviceProvider.GetRequiredService<HttpClient>();
+
+            var dto =
+                claimsDto.ToUserCreationDto()
+                ?? throw new InvalidOperationException(
+                    "Failed to convert claims to UserCreationDto."
+                );
+
+            var userCreation = new UserCreation(_serviceProvider, _httpClientFactory);
+            await userCreation.CreateUserIfNotExistingAsync(dto);
         }
 
-        public async Task<IActionResult> SignOut()
+        public IEnumerable<Claim> GetClaims(AuthenticateResult authenticateResult)
         {
-            await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+            ClaimsIdentity identity =
+                authenticateResult.Principal!.Identities.FirstOrDefault(i => i.Claims.Any())
+                ?? throw new ArgumentException("No valid claims found in the principal.");
 
-            return RedirectToAction("Index", "Home");
+            return identity.Claims;
         }
     }
 }
