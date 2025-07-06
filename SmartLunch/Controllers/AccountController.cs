@@ -11,16 +11,17 @@ using SmartLunch.Services;
 
 namespace SmartLunch.Controllers
 {
-
-    public class AccountController(IServiceProvider serviceProvider,
-                             IHttpClientFactory httpClientFactory) : Controller
+    public class AccountController(
+        IServiceProvider serviceProvider,
+        IHttpClientFactory httpClientFactory
+    ) : Controller
     {
         private readonly IServiceProvider _serviceProvider = serviceProvider;
         private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
+        // [Authorize]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -29,7 +30,7 @@ namespace SmartLunch.Controllers
             return Redirect(redirectUri);
         }
 
-        [AllowAnonymous]
+        // [AllowAnonymous]
         public async Task Login()
         {
             await HttpContext.ChallengeAsync(
@@ -38,7 +39,7 @@ namespace SmartLunch.Controllers
             );
         }
 
-        [AllowAnonymous]
+        // [AllowAnonymous]
         public async Task<IActionResult> GoogleResponse()
         {
             try
@@ -71,12 +72,10 @@ namespace SmartLunch.Controllers
                 return RedirectToAction("Index", "Home");
                 //return Json(claimDto);
             }
-
             catch (InvalidOperationException ex)
             {
                 throw new Exception("An invalid operation occurred during authentication.", ex);
             }
-
             catch (Exception ex)
             {
                 throw new Exception("An unexpected error occurred during authentication.", ex);
