@@ -19,7 +19,7 @@ namespace SmartLunch.Services
             {
                 using var scope = ServiceProvider.CreateScope();
 
-                var httpClientFactory = HttpClientFactory.CreateClient("UserManagementAPI");
+                var httpClient = HttpClientFactory.CreateClient("UserManagementAPI");
 
                 string email = userCreationDto.Email!;
 
@@ -28,7 +28,7 @@ namespace SmartLunch.Services
                     throw new ArgumentException("Email cannot be null or empty", nameof(email));
                 }
 
-                var getResponse = await httpClientFactory.GetAsync($"api/userManagement/{email}");
+                var getResponse = await GetHttpResponseMessageAsync(httpClient, email);
 
                 if (!getResponse.IsSuccessStatusCode)
                 {
@@ -40,76 +40,95 @@ namespace SmartLunch.Services
                         );
                     }
 
-                    var postResponse = await httpClientFactory.PostAsJsonAsync(
+                    var postResponse = await httpClient.PostAsJsonAsync(
                         $"api/userManagement",
                         userCreationDto
                     );
 
-                    if (!postResponse.IsSuccessStatusCode)
-                    {
-                        ThrowExceptionBasedOnResponse(
-                            postResponse.StatusCode,
-                            "Invalid user data provided"
-                        );
-                    }
+                    CheckStatusCode(postResponse);
 
-                    var getResponseNew = await httpClientFactory.GetAsync(
-                        $"api/userManagement/{email}"
-                    );
+                    var getResponseNewUser = await GetHttpResponseMessageAsync(httpClient, email);
 
-                    UserDetailsDto detailsDto =
-                        await getResponseNew.Content.ReadFromJsonAsync<UserDetailsDto>()
-                        ?? throw new InvalidOperationException(
-                            $"Failed to deserialize user data from response"
-                        );
+                    UserDetailsDto detailsDto = await GetUserDetailsDtoAsync(getResponseNewUser);
 
-                    var assignRoleResponse = await httpClientFactory.PostAsJsonAsync(
+                    var assignRoleResponse = await httpClient.PostAsJsonAsync(
                         $"api/userManagement/assignRole",
                         new UserRoleDto(detailsDto.Id, "NormalUser")
                     );
 
-                    if (!assignRoleResponse.IsSuccessStatusCode)
-                    {
-                        ThrowExceptionBasedOnResponse(
-                            assignRoleResponse.StatusCode,
-                            "Invalid role assignment data",
-                            detailsDto
-                        );
-                    }
+                    CheckStatusCode(assignRoleResponse, detailsDto);
 
-                    var putResponse = httpClientFactory.PutAsJsonAsync(
-                        $"api/userManagement/updateLoginDate/{detailsDto.Id}",
-                        // Using null to indicate no body content, as the method signature expects an id
-                        (object?)null
-                    );
-
-                    putResponse.Result.EnsureSuccessStatusCode();
+                    await UpdateLastLoginDate(httpClient, detailsDto);
                 }
+
                 else
                 {
-                    UserDetailsDto detailsDto =
-                        await getResponse.Content.ReadFromJsonAsync<UserDetailsDto>()
-                        ?? throw new InvalidOperationException(
-                            $"Failed to deserialize user data from response"
-                        );
+                    UserDetailsDto detailsDto = await GetUserDetailsDtoAsync(getResponse);
 
-                    var putResponse = httpClientFactory.PutAsJsonAsync(
-                        $"api/userManagement/updateLoginDate/{detailsDto.Id}",
-                        // Using null to indicate no body content, as the method signature expects an id
-                        (object?)null
-                    );
-
-                    putResponse.Result.EnsureSuccessStatusCode();
+                    await UpdateLastLoginDate(httpClient, detailsDto);
                 }
                 // await context.SaveChangesAsync();
             }
+
             catch (DbUpdateException ex)
             {
                 throw new Exception("A database error occurred while saving data.", ex);
             }
+            
             catch (Exception ex)
             {
                 throw new Exception("An unexpected error has occurred", ex);
+            }
+        }
+
+        private static async Task<HttpResponseMessage> GetHttpResponseMessageAsync(
+            HttpClient client,
+            string email
+        )
+        {
+            return await client.GetAsync($"api/userManagement/{email}");
+        }
+
+        private static async Task<UserDetailsDto> GetUserDetailsDtoAsync(
+            HttpResponseMessage responseMessage
+        )
+        {
+            UserDetailsDto detailsDto =
+                await responseMessage.Content.ReadFromJsonAsync<UserDetailsDto>()
+                ?? throw new InvalidOperationException(
+                    $"Failed to deserialize user data from response"
+                );
+
+            return detailsDto;
+        }
+
+        private static async Task UpdateLastLoginDate(
+            HttpClient httpClient,
+            UserDetailsDto detailsDto
+        )
+        {
+            var putResponse = await httpClient.PutAsJsonAsync(
+                $"api/userManagement/updateLoginDate/{detailsDto.Id}",
+                // Using null to indicate no body content, as the method signature expects an id
+                (object?)null
+            );
+
+            putResponse.EnsureSuccessStatusCode();
+        }
+
+        private static void CheckStatusCode(
+            HttpResponseMessage responseMessage,
+            // detailsDto is optional as it used only for assignRoleResponse
+            UserDetailsDto detailsDto = null
+        )
+        {
+            if (!responseMessage.IsSuccessStatusCode)
+            {
+                ThrowExceptionBasedOnResponse(
+                    responseMessage.StatusCode,
+                    "Invalid role assignment data",
+                    detailsDto
+                );
             }
         }
 
