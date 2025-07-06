@@ -79,7 +79,6 @@ namespace SmartLunch.Api.Controllers
 
             User user = newUser.ToEntity();
 
-            // await _context.Users.AddAsync(user);
             var result = await _userManager.CreateAsync(user);
 
             if (!result.Succeeded)
@@ -145,7 +144,7 @@ namespace SmartLunch.Api.Controllers
 
         // PUT api/userManagement/5/updateLoginDate
         [HttpPut("{id}/updateLoginDate", Name = "UpdateLastLoginDate")]
-        public async Task<IResult> UpdateLastLoginDate(int id, [FromBody] UserDetailsDto detailsDto)
+        public async Task<IResult> UpdateLastLoginDate(int id)
         {
             // User? existingUser = await _context.Users.FindAsync(id);
             User? existingUser = await _userManager.FindByIdAsync(id.ToString());

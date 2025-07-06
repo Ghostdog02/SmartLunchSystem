@@ -15,12 +15,8 @@ namespace SmartLunch.Api.Services
             ArgumentNullException.ThrowIfNull(user, $"user cannot be null");
             ArgumentNullException.ThrowIfNull(dto, $"dto cannot be null");
 
-            user.Email = dto.Email;
-            user.NormalizedEmail = userManager.NormalizeEmail(dto.Email);
             user.UserName = dto.FullName;
             user.NormalizedUserName = userManager.NormalizeName(dto.FullName);
-            user.SecurityStamp = dto.SecurityStamp;
-            user.ConcurrencyStamp = dto.ConcurrencyStamp;
             user.PhoneNumber = dto.PhoneNumber;
             user.PhoneNumberConfirmed = !string.IsNullOrWhiteSpace(dto.PhoneNumber);
 
