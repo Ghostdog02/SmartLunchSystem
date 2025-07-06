@@ -40,7 +40,6 @@ namespace SmartLunch.Api
                 .AddDefaultTokenProviders();
 
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            //builder.Services.AddOpenApi();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
@@ -53,10 +52,6 @@ namespace SmartLunch.Api
                         Description = "Interactive API docs",
                     }
                 );
-
-                // (Optional) Include XML comments for richer docs:
-                // var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                // c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFile));
             });
 
             var app = builder.Build();
@@ -73,12 +68,11 @@ namespace SmartLunch.Api
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                     c.RoutePrefix = string.Empty; // Serve UI at root (optional)
                 });
-
-                //app.MapOpenApi();
             }
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();

@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
 using SmartLunch.Api.Dtos;
 
 namespace SmartLunch.Api.Mapping
@@ -7,10 +8,14 @@ namespace SmartLunch.Api.Mapping
     {
         public static ClaimsDto ToClaimsDto(this IEnumerable<Claim> claims)
         {
+            if (!claims.Any())
+            {
+                throw new ArgumentException($"Given claims are either null or empty");
+            }
+
             return new ClaimsDto(
                 claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value,
-                claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value,
-                claims.FirstOrDefault(c => c.Type == ClaimTypes.MobilePhone)!.Value
+                claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value
             );
         }
 
@@ -22,7 +27,7 @@ namespace SmartLunch.Api.Mapping
                 dto.FullName!,
                 Guid.NewGuid().ToString(), // SecurityStamp
                 Guid.NewGuid().ToString(), // ConcurrencyStamp
-                dto.PhoneNumber,
+                string.Empty,
                 DateTime.Now
             );
 
