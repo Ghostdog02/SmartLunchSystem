@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using Google.Apis.Auth.AspNetCore3;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -21,16 +20,16 @@ namespace SmartLunch.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        // [Authorize]
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            string redirectUri = Url.Action("Index", "Home");
+            string redirectUri = Url.Action("Index", "Home")!;
             return Redirect(redirectUri);
         }
 
-        // [AllowAnonymous]
+        [AllowAnonymous]
         public async Task Login()
         {
             await HttpContext.ChallengeAsync(
@@ -39,7 +38,7 @@ namespace SmartLunch.Controllers
             );
         }
 
-        // [AllowAnonymous]
+        [AllowAnonymous]
         public async Task<IActionResult> GoogleResponse()
         {
             try
@@ -72,10 +71,12 @@ namespace SmartLunch.Controllers
                 return RedirectToAction("Index", "Home");
                 //return Json(claimDto);
             }
+
             catch (InvalidOperationException ex)
             {
                 throw new Exception("An invalid operation occurred during authentication.", ex);
             }
+
             catch (Exception ex)
             {
                 throw new Exception("An unexpected error occurred during authentication.", ex);

@@ -1,17 +1,22 @@
 ﻿@* <p><a asp-area="" asp-controller="Home" asp-action="Login">Login with Google</a></p> *@
 
 <ul>
-    @if (Context.User.Identity.IsAuthenticated)
+    @if(Context.User.Identity != null)
     {
-        <li>
-            <a>Hello @User.Identity.Name</a>
-        </li>
-        <li>
-            <form asp-controller="Account" asp-action="Logout" method="post">
-                <button type="submit" class="btn btn-link">Logout from Google</button>
-            </form>
-        </li>
+        @if (Context.User.Identity.IsAuthenticated)
+        {
+            <li>
+                <a>Hello @User.Identity!.Name</a>
+            </li>
+            <li>
+                <form asp-controller="Account" asp-action="Logout" method="post">
+                    <button type="submit" class="btn btn-link">Logout from Google</button>
+                </form>
+            </li>
+        }
     }
+
+   
 
     else
     {

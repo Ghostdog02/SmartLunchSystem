@@ -58,16 +58,15 @@ namespace SmartLunch.Services
 
                     CheckStatusCode(assignRoleResponse, detailsDto);
 
-                    await UpdateLastLoginDate(httpClient, detailsDto);
+                    await UpdateLastLoginDateAsync(httpClient, detailsDto);
                 }
 
                 else
                 {
                     UserDetailsDto detailsDto = await GetUserDetailsDtoAsync(getResponse);
 
-                    await UpdateLastLoginDate(httpClient, detailsDto);
+                    await UpdateLastLoginDateAsync(httpClient, detailsDto);
                 }
-                // await context.SaveChangesAsync();
             }
 
             catch (DbUpdateException ex)
@@ -102,7 +101,7 @@ namespace SmartLunch.Services
             return detailsDto;
         }
 
-        private static async Task UpdateLastLoginDate(
+        private static async Task UpdateLastLoginDateAsync(
             HttpClient httpClient,
             UserDetailsDto detailsDto
         )
@@ -119,7 +118,7 @@ namespace SmartLunch.Services
         private static void CheckStatusCode(
             HttpResponseMessage responseMessage,
             // detailsDto is optional as it used only for assignRoleResponse
-            UserDetailsDto detailsDto = null
+            UserDetailsDto detailsDto = null!
         )
         {
             if (!responseMessage.IsSuccessStatusCode)
@@ -135,7 +134,7 @@ namespace SmartLunch.Services
         private static void ThrowExceptionBasedOnResponse(
             HttpStatusCode httpStatusCode,
             string badRequestMessage,
-            UserDetailsDto dto = null
+            UserDetailsDto dto = null!
         ) // It is used only for httpStatus not found case
         {
             throw httpStatusCode switch
