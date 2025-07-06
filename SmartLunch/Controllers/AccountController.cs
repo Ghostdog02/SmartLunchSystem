@@ -68,8 +68,27 @@ namespace SmartLunch.Controllers
 
                 await CreateUser(claimsDto);
 
+                // var roles = await CreateUserAndGetRoles(claimsDto);
+                var client = httpClientFactory.CreateClient("RoleManagementAPI");
+
+                var responseMessage = await client.GetAsync($"api/roleManagement/{claimsDto.Email}");
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string? role = await responseMessage.Content.ReadFromJsonAsync<string>();
+                    var localClaims = new List<Claim>
+                    {
+                        new(ClaimTypes.Name, claimsDto.FullName),
+                        new(ClaimTypes.Email, claimsDto.Email),
+                        new(ClaimTypes.Role, role)
+                    };
+
+                    var identity = new ClaimsIdentity(localClaims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var principal = new ClaimsPrincipal(identity);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                }
+
                 return RedirectToAction("Index", "Home");
-                //return Json(claimDto);
             }
 
             catch (InvalidOperationException ex)

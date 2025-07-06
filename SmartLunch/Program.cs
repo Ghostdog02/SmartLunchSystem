@@ -28,6 +28,18 @@ namespace SmartLunch
                 }
             );
 
+            builder.Services.AddHttpClient(
+                "RoleManagementAPI",
+                client =>
+                {
+                    client.BaseAddress = new Uri("http://localhost:5116");
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(
+                        new MediaTypeWithQualityHeaderValue("application/json")
+                    );
+                }
+            );
+
             builder
                 .Services.AddAuthentication(options =>
                 {
@@ -50,13 +62,13 @@ namespace SmartLunch
                     }
                 );
 
-            // builder.Services.Configure<IdentityOptions>(options =>
-            // {
-            //     // Default SignIn settings.
-            //     options.SignIn.RequireConfirmedEmail = true;
-            //     options.SignIn.RequireConfirmedPhoneNumber = false;
-            //     options.Lockout.AllowedForNewUsers = true;
-            // });
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                // Default SignIn settings.
+                options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
+                options.Lockout.AllowedForNewUsers = true;
+            });
 
             var app = builder.Build();
 
