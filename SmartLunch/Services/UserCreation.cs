@@ -134,8 +134,9 @@ namespace SmartLunch.Services
         private static void ThrowExceptionBasedOnResponse(
             HttpStatusCode httpStatusCode,
             string badRequestMessage,
+            // It is used only for httpStatus not found case
             UserDetailsDto dto = null!
-        ) // It is used only for httpStatus not found case
+        ) 
         {
             throw httpStatusCode switch
             {

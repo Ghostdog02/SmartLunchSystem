@@ -18,15 +18,17 @@ namespace SmartLunch.Tests
         {
             //Arrange
             var stubServiceProvider = new Mock<IServiceProvider>();
-            AccountController controller = new AccountController(stubServiceProvider.Object);
+            var stubHttpClientFactory = new Mock<IHttpClientFactory>();
+
+            AccountController controller = new(stubServiceProvider.Object,
+                stubHttpClientFactory.Object);
 
             var identity = new ClaimsIdentity(
-                new List<Claim>
-                {
+                [
                     new Claim(ClaimTypes.Name, "Test User"),
                     new Claim(ClaimTypes.Email, "test@example.com"),
-                    new Claim(ClaimTypes.Role, "Admin"),
-                }
+                    new(ClaimTypes.Role, "Admin"),
+                ]
             );
 
             var principal = new ClaimsPrincipal(identity);
@@ -50,10 +52,13 @@ namespace SmartLunch.Tests
         {
             //Arrange
             var stubServiceProvider = new Mock<IServiceProvider>();
-            AccountController controller = new AccountController(stubServiceProvider.Object);
+            var stubHttpClientFactory = new Mock<IHttpClientFactory>();
+
+            AccountController controller = new(stubServiceProvider.Object,
+                stubHttpClientFactory.Object);
 
             //Act and Assert
-            Assert.Throws<NullReferenceException>(() => controller.GetClaims(null));
+            Assert.Throws<NullReferenceException>(() => controller.GetClaims(null!));
         }
 
         [Fact]
@@ -61,7 +66,10 @@ namespace SmartLunch.Tests
         {
             //Arrange
             var stubServiceProvider = new Mock<IServiceProvider>();
-            AccountController controller = new AccountController(stubServiceProvider.Object);
+            var stubHttpClientFactory = new Mock<IHttpClientFactory>();
+
+            AccountController controller = new(stubServiceProvider.Object,
+                stubHttpClientFactory.Object);
 
             var identity = new ClaimsIdentity();
 
@@ -101,9 +109,13 @@ namespace SmartLunch.Tests
 
             var httpContext = new DefaultHttpContext { RequestServices = serviceProvider };
 
-            var controller = new AccountController(serviceProvider)
+            var stubServiceProvider = new Mock<IServiceProvider>();
+            var stubHttpClientFactory = new Mock<IHttpClientFactory>();
+
+            AccountController controller = new(stubServiceProvider.Object,
+                stubHttpClientFactory.Object)
             {
-                ControllerContext = new ControllerContext { HttpContext = httpContext },
+                ControllerContext = new ControllerContext { HttpContext = httpContext }
             };
 
             // Act

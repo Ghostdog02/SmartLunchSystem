@@ -1,16 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartLunch.Database.Tests
 {
     public class TestDatabaseFixture
     {
-        private const string ConnectionString = @"Server=(localdb)\mssqllocaldb;Database=SmartLunchSystemUnderTests;MultipleActiveResultSets=true;Integrated Security=true";
+        private const string ConnectionString = @"Server=localhost;Database=SmartLunchSystem;User Id=sa;Password=YourStrong!Passw0rd;Integrated Security=false;TrustServerCertificate=True;MultipleActiveResultSets=true";
 
         private static readonly Lock _lock = new();
         private static bool _databaseInitialized;
@@ -25,10 +19,6 @@ namespace SmartLunch.Database.Tests
                     {
                         context.Database.EnsureDeleted();
                         context.Database.EnsureCreated();
-                        //context.AddRange(
-                        //    new Blog { Name = "Blog1", Url = "http://blog1.com" },
-                        //    new Blog { Name = "Blog2", Url = "http://blog2.com" });
-                        //context.SaveChanges();
                     }
 
                     _databaseInitialized = true;
@@ -36,7 +26,7 @@ namespace SmartLunch.Database.Tests
             }
         }
 
-        public SmartLunchDbContext CreateContext()
+        public static SmartLunchDbContext CreateContext()
             => new SmartLunchDbContext(
                 new DbContextOptionsBuilder<SmartLunchDbContext>()
                     .UseSqlServer(ConnectionString)

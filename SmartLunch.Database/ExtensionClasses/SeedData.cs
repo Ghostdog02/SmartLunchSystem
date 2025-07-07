@@ -7,7 +7,7 @@ namespace SmartLunch.Database.ExtensionClasses
 {
     public class SeedData
     {
-        public async Task InitializeAsync(IServiceProvider serviceProvider)
+        public static async Task InitializeAsync(IServiceProvider serviceProvider)
         {
             try
             {
@@ -46,6 +46,8 @@ namespace SmartLunch.Database.ExtensionClasses
         )
         {
             var adminEmail = "alex.vesely07@gmail.com";
+            var userName = "Ghostdog";
+
             if (await userManager.FindByEmailAsync(adminEmail) != null)
             {
                 return;
@@ -55,23 +57,28 @@ namespace SmartLunch.Database.ExtensionClasses
 
             var user = new User
             {
-                UserName = "Ghost_dog",
+                UserName = userName,
                 Email = adminEmail,
                 EmailConfirmed = true,
                 LockoutEnabled = false,
                 LastLoginDate = today,
                 RegistrationDate = today,
+                NormalizedEmail = userName.Normalize()
             };
 
             var creationResult = await userManager.CreateAsync(user);
 
-            // var userCreationResultValidator = new IdentityResultValidator();
-            // userCreationResultValidator.CheckSuccess(creationResult, "User creation failed");
+            if (!creationResult.Succeeded)
+            {
+                throw new InvalidOperationException($"{creationResult.Errors}");
+            }
 
             var addToRoleResult = await userManager.AddToRoleAsync(user, "Admin");
 
-            // var roleResultValidator = new IdentityResultValidator();
-            // roleResultValidator.CheckSuccess(addToRoleResult, "Adding user to role failed");
+            if (!addToRoleResult.Succeeded)
+            {
+                throw new InvalidOperationException($"{addToRoleResult.Errors}");
+            }
 
             await context.SaveChangesAsync();
         }

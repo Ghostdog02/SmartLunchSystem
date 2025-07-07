@@ -10,13 +10,19 @@ using SmartLunch.Services;
 
 namespace SmartLunch.Controllers
 {
-    public class AccountController(
-        IServiceProvider serviceProvider,
-        IHttpClientFactory httpClientFactory
-    ) : Controller
+    public class AccountController : Controller
     {
-        private readonly IServiceProvider _serviceProvider = serviceProvider;
-        private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        public AccountController(
+            IServiceProvider serviceProvider,
+            IHttpClientFactory httpClientFactory
+        )
+        {
+            _serviceProvider = serviceProvider;
+            _httpClientFactory = httpClientFactory;
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -60,6 +66,7 @@ namespace SmartLunch.Controllers
                 }
 
                 var claims = GetClaims(authenticateResult);
+
                 ClaimsDto claimsDto =
                     claims.ToClaimsDto()
                     ?? throw new InvalidOperationException(
@@ -68,14 +75,19 @@ namespace SmartLunch.Controllers
 
                 await CreateUser(claimsDto);
 
-                // var roles = await CreateUserAndGetRoles(claimsDto);
-                var client = httpClientFactory.CreateClient("RoleManagementAPI");
+                var client = _httpClientFactory.CreateClient("RoleManagementAPI");
 
                 var responseMessage = await client.GetAsync($"api/roleManagement/{claimsDto.Email}");
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string? role = await responseMessage.Content.ReadFromJsonAsync<string>();
+
+                    if (role == null || role == string.Empty)
+                    {
+                        throw new InvalidOperationException($"Getting role by email failed");
+                    }
+
                     var localClaims = new List<Claim>
                     {
                         new(ClaimTypes.Name, claimsDto.FullName),
@@ -104,8 +116,6 @@ namespace SmartLunch.Controllers
 
         private async Task CreateUser(ClaimsDto claimsDto)
         {
-            // HttpClient client = _serviceProvider.GetRequiredService<HttpClient>();
-
             var dto =
                 claimsDto.ToUserCreationDto()
                 ?? throw new InvalidOperationException(

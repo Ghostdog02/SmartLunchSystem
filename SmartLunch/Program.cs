@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
-using SmartLunch.Database.ExtensionClasses;
 
 namespace SmartLunch
 {
@@ -13,7 +12,7 @@ namespace SmartLunch
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Add services to the container
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddHttpClient(
@@ -58,13 +57,11 @@ namespace SmartLunch
                         options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
                         options.Scope.Add("profile");
                         options.Scope.Add("email");
-                        //options.CallbackPath = "/signin-google";
                     }
                 );
 
             builder.Services.Configure<IdentityOptions>(options =>
             {
-                // Default SignIn settings.
                 options.SignIn.RequireConfirmedEmail = true;
                 options.SignIn.RequireConfirmedPhoneNumber = false;
                 options.Lockout.AllowedForNewUsers = true;

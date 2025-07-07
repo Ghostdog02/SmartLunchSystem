@@ -4,7 +4,8 @@ using Microsoft.Extensions.Configuration;
 
 namespace SmartLunch.Database
 {
-    public class SmartLunchDbContextFactory : IDesignTimeDbContextFactory<SmartLunchDbContext>
+    public class SmartLunchDbContextFactory
+        : IDesignTimeDbContextFactory<SmartLunchDbContext>
     {
         public SmartLunchDbContext CreateDbContext(string[] args)
         {

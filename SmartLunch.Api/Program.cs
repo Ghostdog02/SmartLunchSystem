@@ -80,7 +80,7 @@ namespace SmartLunch.Api
             var seeder = new SeedData();
 
             await app.Services.MigrateDbAsync();
-            await seeder.InitializeAsync(app.Services);
+            await SeedData.InitializeAsync(app.Services);
 
             app.Run();
         }

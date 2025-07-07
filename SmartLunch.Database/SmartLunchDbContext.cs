@@ -51,9 +51,8 @@ namespace SmartLunch.Database
         }
     }
 
-    public class CustomRoleStore : RoleStore<IdentityRole<int>, SmartLunchDbContext, int>
+    public class CustomRoleStore(SmartLunchDbContext context)
+        : RoleStore<IdentityRole<int>, SmartLunchDbContext, int>(context)
     {
-        public CustomRoleStore(SmartLunchDbContext context)
-            : base(context) { }
     }
 }

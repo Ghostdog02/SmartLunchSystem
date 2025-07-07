@@ -13,9 +13,22 @@ namespace SmartLunch.Api.Mapping
                 throw new ArgumentException($"Given claims are either null or empty");
             }
 
+            var nameClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+            var emailClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+
+            if (nameClaim == null)
+            {
+                throw new ArgumentException("Required claim name is missing.");
+            }
+
+            if (emailClaim == null)
+            {
+                throw new ArgumentException("Required claim email is missing.");
+            }
+
             return new ClaimsDto(
-                claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value,
-                claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value
+                nameClaim.Value,
+                emailClaim.Value
             );
         }
 

@@ -7,15 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLunch", "SmartLunch\Sm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLunch.Database", "SmartLunch.Database\SmartLunch.Database.csproj", "{47D97229-76E8-445C-A226-FF58C99AB72A}"
 EndProject
-<<<<<<< HEAD
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLunch.Tests", "SmartLunch.Tests\SmartLunch.Tests.csproj", "{4371B686-8344-44ED-A240-9A140B824621}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLunch.Database.Tests", "SmartLunch.Database.Tests\SmartLunch.Database.Tests.csproj", "{8B08C99B-77FF-453C-97E0-53ED54E85EAC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLunch.Api", "SmartLunch.Api\SmartLunch.Api.csproj", "{0E5A0F3B-5730-4E89-9AE7-07AEA6CBF2AE}"
-=======
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserManagementApi", "UserManagementApi\UserManagementApi.csproj", "{38EA2E86-60DB-4C50-8651-4BB73A62396D}"
->>>>>>> 0b0cfaa5c829152080449904e3510eb4b791d763
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,7 +27,6 @@ Global
 		{47D97229-76E8-445C-A226-FF58C99AB72A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47D97229-76E8-445C-A226-FF58C99AB72A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47D97229-76E8-445C-A226-FF58C99AB72A}.Release|Any CPU.Build.0 = Release|Any CPU
-<<<<<<< HEAD
 		{4371B686-8344-44ED-A240-9A140B824621}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4371B686-8344-44ED-A240-9A140B824621}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4371B686-8344-44ED-A240-9A140B824621}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -44,12 +39,6 @@ Global
 		{0E5A0F3B-5730-4E89-9AE7-07AEA6CBF2AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E5A0F3B-5730-4E89-9AE7-07AEA6CBF2AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E5A0F3B-5730-4E89-9AE7-07AEA6CBF2AE}.Release|Any CPU.Build.0 = Release|Any CPU
-=======
-		{38EA2E86-60DB-4C50-8651-4BB73A62396D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38EA2E86-60DB-4C50-8651-4BB73A62396D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38EA2E86-60DB-4C50-8651-4BB73A62396D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38EA2E86-60DB-4C50-8651-4BB73A62396D}.Release|Any CPU.Build.0 = Release|Any CPU
->>>>>>> 0b0cfaa5c829152080449904e3510eb4b791d763
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

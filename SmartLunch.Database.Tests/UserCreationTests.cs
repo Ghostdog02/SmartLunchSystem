@@ -1,34 +1,32 @@
 ﻿using Moq;
 using SmartLunch.Api.Dtos;
+using SmartLunch.Api.Mapping;
 using SmartLunch.Services;
-using System.Security.Claims;
 
 namespace SmartLunch.Database.Tests
 {
-    public class UserCreationTests : IClassFixture<TestDatabaseFixture>
+    public class UserCreationTests(TestDatabaseFixture fixture)
+        : IClassFixture<TestDatabaseFixture>
     {
-        public TestDatabaseFixture Fixture { get; }
-
-        public UserCreationTests(TestDatabaseFixture fixture)
-        {
-            Fixture = fixture;
-        }
+        public TestDatabaseFixture Fixture { get; } = fixture;
 
         [Fact]
         public async Task CreateUserIfNotExistingAsync_CreateUser_AddUserToDatabase()
         {
             //Arrange
-            using var context = Fixture.CreateContext();
+            using var context = TestDatabaseFixture.CreateContext();
             context.Database.BeginTransaction();
 
             var serviceProviderStub = new Mock<IServiceProvider>();
+            var stubHttpClientFactory = new Mock<IHttpClientFactory>();
 
             var claimsDto = new ClaimsDto("test@example.com", "Test");
 
-            var userService = new UserCreation(serviceProviderStub.Object);
+            var userService = new UserCreation(serviceProviderStub.Object,
+                stubHttpClientFactory.Object);
 
             //Act
-            await userService.CreateUserIfNotExistingAsync(claimsDto);
+            await userService.CreateUserIfNotExistingAsync(claimsDto.ToUserCreationDto());
 
             context.ChangeTracker.Clear();
 

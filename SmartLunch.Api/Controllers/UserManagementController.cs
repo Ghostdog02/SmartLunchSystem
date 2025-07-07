@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SmartLunch.Api.Dtos;
@@ -7,13 +8,10 @@ using SmartLunch.Api.Services;
 using SmartLunch.Database;
 using SmartLunch.Database.Entities;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace SmartLunch.Api.Controllers
 {
     [Route("api/userManagement")]
     [ApiController]
-    //[Authorize(Roles = "Admin")]
     public class UserManagementController(
         SmartLunchDbContext context,
         UserManager<User> userManager
@@ -126,7 +124,6 @@ namespace SmartLunch.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IResult> Put(int id, [FromBody] UpdatedUserDto dto)
         {
-            // User? existingUser = await _context.Users.FindAsync(id);
             User? existingUser = await _userManager.FindByIdAsync(id.ToString());
 
             if (existingUser == null)
@@ -136,11 +133,7 @@ namespace SmartLunch.Api.Controllers
 
             existingUser.UpdateUserCredentials(dto, _userManager);
 
-            // await _userManager.UpdateAsync(dto.ToEntity(id));
             await _userManager.UpdateAsync(existingUser);
-            // _context.Entry(existingUser)
-            //     .CurrentValues
-            //     .SetValues(dto.ToEntity(id));
 
             await _context.SaveChangesAsync();
 
@@ -151,7 +144,6 @@ namespace SmartLunch.Api.Controllers
         [HttpPut("updateLoginDate/{id}", Name = "UpdateLastLoginDateAsync")]
         public async Task<IResult> UpdateLastLoginDateAsync(int id)
         {
-            // User? existingUser = await _context.Users.FindAsync(id);
             User? existingUser = await _userManager.FindByIdAsync(id.ToString());
 
             if (existingUser == null)
@@ -161,11 +153,7 @@ namespace SmartLunch.Api.Controllers
 
             existingUser.UpdateLastLoginDate();
 
-            // await _userManager.UpdateAsync(dto.ToEntity(id));
             await _userManager.UpdateAsync(existingUser);
-            // _context.Entry(existingUser)
-            //     .CurrentValues
-            //     .SetValues(dto.ToEntity(id));
 
             await _context.SaveChangesAsync();
 
@@ -184,7 +172,7 @@ namespace SmartLunch.Api.Controllers
             }
 
             await _userManager.DeleteAsync(existingUser);
-            // _context.Users.Remove(existingUser);
+            
             await _context.SaveChangesAsync();
 
             return Results.NoContent();
