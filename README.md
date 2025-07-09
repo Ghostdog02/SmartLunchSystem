@@ -8,7 +8,7 @@ This project is a robust, cross-platform ASP.NET Core MVC web application with t
 - ✅ **Role-Based Access Control using Microsoft Identity**  
 - ✅ **API Controller for External Communication**  
 - ✅ **Entity Framework with Code-First Migrations**  
-- ✅ **Test-Driven Development using xUnit**  
+- ✅ **Comprehensive Testing with xUnit**  
 - ✅ **Works on both Ubuntu 24.04 & Windows 11**  
 
 Whether you're running Linux or Windows, this project is designed to be easily cloned, run, and tested locally.
